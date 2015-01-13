@@ -35,6 +35,23 @@ using namespace std;
  ************************************************************************
  ************************************************************************/
 
+// Section 9.6 - Excercises
+// ------------------------
+
+// Extend the Exception class by creating two inherited classes 'OutOfRangeException" and "FileNotOpenException". The constructors for each of the two classes should take only the probString argument and should set the tagString member to an appropriate string. Write a catch block which is able to catch a gneric exception but can also differentiate between these two types of error.
+
+
+
+// Section 9.5 - Test-Driven Development
+// -------------------------------------
+
+// The following tips may help to get the most out of test driven development
+// 1. Use a C++ testing framework such as googletest. This will help structure your tests
+// 2. Add one or more tests for every new piece of functionality.
+// 3. Make tests definitive-they should either pass or fail. Beware of floating point tolerances and allow for rounding errors in caclulations.
+// 4. Remember to write tests for corner cases. That is cases that are rare but may cause problems collinear triangles, singular matrices, the complex number 0+0i
+// 5. Review your tests from time to time. Add new tests as necessary and remove only those which you know to be redundant.
+// 6. Automate your testing, so that you do not have to remember to run the tests or remember to check the results.
 
 // We have been using assertions to check for things up to this point we are going to change that
 
@@ -68,12 +85,23 @@ using namespace std;
 
 #include "Exception.hpp"
 
+
 // Constructor for exception class
 
 Exception::Exception(std::string tagString, std::string probString)
 {
     mTag = tagString;
     mProblem = probString;
+}
+
+// Constructor for FileNotOpenException exception class
+
+#include "FileNotOpenException.hpp"
+
+FileNotOpenException::Exception(std::string probString)
+{
+     mTag = "File not open";
+     mProblem = probString;
 }
 
 // Exception print function 
@@ -87,7 +115,38 @@ void Exception::PrintDebug() const
 
 // Listing 3.4 we read from an output file. We assume that the file exists and throw an error if it did not. Below is a more sophisticate read function
 
-void ReadFile(const )
+void ReadFile(const std::string& fileName, double x[], double y[])
+{
+    std::ifstream read_file(fileName.c_str());
+    if (read_file.is_open() == false)
+    {
+        throw (Exception("FILE", "File can't be opened"));
+    }
+    for (int i=0; i<6; i++)
+    {
+        read_file >> x[i] >> y[i];
+    }
+    read_file.close();
+    
+    std::cout << fileName << " read successfully\n";
+}
+
+int main(int argc, char* argv[])
+{
+    double x[6], y[6];
+    try {
+        ReadFile("Output.dat", x, y);
+    } catch (Exception& error)
+    {
+        error.PrintDebug();
+        std::cout << "Couldn't open Output.dat\n";
+        std::cout << "Give alternative location\n";
+        std::string file_name;
+        std::cin >> file_name;
+        ReadFile(file_name, x, y);
+    }
+    
+}
 
 /************************************************************************
  ************************************************************************
@@ -102,28 +161,28 @@ void ReadFile(const )
 
 // Ex 8.4 - Modify the example of an STL set given in Sect 8.3.2 so that the coordinates of the point are now given by double precision floating point variables.
 
-#include "Point2d.hpp"
+// #include "Point2d.hpp"
 
-int main(int argc, char* argv[])
-{
-    std::set<Point2d> points;
-    Point2d origin(0.0,0.0);
-    points.insert(origin);
-    points.insert(Point2d(-2.4, -5.9));
-    points.insert(Point2d(-1.45, -3.98));
-    points.insert(Point2d(2, 4));
-    
-    
-    std::cout << "Number of points in set = " << points.size() << "\n";
-    
-    std::set<Point2d>::const_iterator c;
-    for (c=points.begin(); c!=points.end(); c++)
-    {
-        std::cout << c->v << " " << c->z << "\n";
-    }
-    
-    return 0;
-}
+//int main(int argc, char* argv[])
+//{
+//    std::set<Point2d> points;
+//    Point2d origin(0.0,0.0);
+//    points.insert(origin);
+//    points.insert(Point2d(-2.4, -5.9));
+//    points.insert(Point2d(-1.45, -3.98));
+//    points.insert(Point2d(2, 4));
+//    
+//    
+//    std::cout << "Number of points in set = " << points.size() << "\n";
+//    
+//    std::set<Point2d>::const_iterator c;
+//    for (c=points.begin(); c!=points.end(); c++)
+//    {
+//        std::cout << c->v << " " << c->z << "\n";
+//    }
+//    
+//    return 0;
+//}
 
 // Ex 8.3 - Use the class of complex numbers in Sect 6.4 to create an STL vector of complex numbers. Investigate the functionality of the STL demonstrated in Sec. 8.3.1 using this vector of complex numbers. When you add an object in an STL vector it is a copy which is added, so the copy constructor must be working as expected.
 

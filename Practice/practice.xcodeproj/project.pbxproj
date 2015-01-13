@@ -23,6 +23,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D18DF9E1A64F58D009A57FE /* OutOfRangeException.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OutOfRangeException.hpp; sourceTree = "<group>"; };
+		0D18DF9F1A64F609009A57FE /* FileNotOpenException.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FileNotOpenException.hpp; sourceTree = "<group>"; };
 		0D1952571A1ACD1400AC63C3 /* AbstractOdeSolver.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AbstractOdeSolver.hpp; sourceTree = "<group>"; };
 		0D1FC5581A0C831500406639 /* ComplexNumber.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ComplexNumber.hpp; sourceTree = "<group>"; };
 		0D3ACAE91A3146EC00A70A41 /* ForwardEulerSolver.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ForwardEulerSolver.hpp; sourceTree = "<group>"; };
@@ -78,6 +80,8 @@
 			isa = PBXGroup;
 			children = (
 				0DAF006319BD72B400B74AB2 /* main.cpp */,
+				0D18DF9F1A64F609009A57FE /* FileNotOpenException.hpp */,
+				0D18DF9E1A64F58D009A57FE /* OutOfRangeException.hpp */,
 				0DF02A931A5FAD3500DC236A /* Exception.hpp */,
 				C5A555DC1A3BD427006D3410 /* Point2d.hpp */,
 				0D1FC5581A0C831500406639 /* ComplexNumber.hpp */,

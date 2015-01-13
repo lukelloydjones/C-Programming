@@ -10,13 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "practice/main.cpp"
-            timestampString = "442293026.061311"
+            timestampString = "442820256.183684"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1354"
-            endingLineNumber = "1354"
-            landmarkName = "operator&lt;&lt;(std::ostream&amp; output,const ComplexNumber&amp; z)"
-            landmarkType = "7">
+            startingLineNumber = "1385"
+            endingLineNumber = "1385">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
