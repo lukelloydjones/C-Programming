@@ -14,8 +14,10 @@
 
 class FileNotOpenException: public Exception
 {
+private:
+    std::string problemString;
 public:
-    FileNotOpenException();
+    FileNotOpenException(std::string probStringDerived);
 };
     
 #endif

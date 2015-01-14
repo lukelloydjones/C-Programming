@@ -14,8 +14,10 @@
 
 class OutOfRangeException: public Exception
 {
+private:
+    std::string problemString;
 public:
-    OutOfRangeException():
+    OutOfRangeException(std::string probStringDerived);
 };
 
 #endif

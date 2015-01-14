@@ -35,12 +35,101 @@ using namespace std;
  ************************************************************************
  ************************************************************************/
 
+
 // Section 9.6 - Excercises
 // ------------------------
 
+// Excercise 3
+
+// Problem 7.3. Suppose that the solution of the ode represents a prob of some event
+// happening as time evolves. The true solution should be non-negative and no
+// greater than 1. Slight violations of this are acceptable and thus we extend the
+// library to handle these requirements in a way that is consitent with the
+// of dealing with errors in section 9.2.
+
+// Assume that an acceptable absolute error is 10e-6. When solving the diff equation
+// we won't be concerned if the solution for a value of yi in problem 7.3 lies in
+// in the interval -10e-6<y_i<0. Under these circumstance we simply write 0.0
+// to file containing the solution at eaxh time ti and the value yi. If the solution
+// lies in the interval 1 < y_i < 1+10e-6 we write 1.0 to file. This is an instance
+// type 1 error.
+
+// #1-IF THE ERROR CAN BE FIXED SAFELY, THEN FIX IT. IF NEED BE WARN THE USER
+
+// Now suppose the value of yi lies further outside the range of acceptabel value.
+// The most likely reason is a h that is too large. Under this circumstance an
+// exception should be thrown explaining this. The code that calls the library for
+// the initial value problem ode would then know to reduce the step size: a suitable
+// new step size would be half of the step size currently being used. This is an
+// instance of an error of #2
+
+// #2 - If the error could be caused by some reasonable user input then throw an excep-tion up to the calling code, since the calling code should have enough context to fix the problem.
+
+// It is possible that an error has been made elsewhere in the library or in the
+// used to call the library. Under these circumstances persisting with making the
+// size smaller may not solve the problem. We therefore want to terminates the code
+// if the step size falls below some critical threshold. This is type 3 #3
+
+// #3 -  If the error should not happen under normal circumstances then trip an assertion.
+
+// PROBLEM
+
+// Incorporate the error handling procedure described above into the library for
+// solving initial value odes. Test this using the error handling using the example
+// dy/dt = -100y, with initial condition y=0.8 when t=0, for the time interval 0<t<100. Investigate how different values of the step size h affect the error handling implemented.
+
+
+
+
+// Excercise 2
+
+// Section 4.3.2 showed how it was possible for bad memory allocation to terminate
+// your program. If you want your program to continue through a memory allocation
+// error there are two ways to cope with the exception: to turn the exception off
+// (and check the value of the pointer) or catch the exception.
+
+//int main(int argc, char* argv[])
+//{
+//    double* p_x;
+//    
+//    try
+//    {
+//    p_x = new double[100000000000000];
+//    }
+//    catch (std::bad_alloc& badAlloc)
+//    {
+//        std::cout << "Allocation failed\n";
+//        std::cout << "Give an alternative size of the vector\n";
+//        int newSize;
+//        std::cin >> newSize;
+//        p_x = new double[newSize];
+//    }
+//    
+//    delete p_x;
+//    return 0;
+//}
+
+// Excercise 1
+
 // Extend the Exception class by creating two inherited classes 'OutOfRangeException" and "FileNotOpenException". The constructors for each of the two classes should take only the probString argument and should set the tagString member to an appropriate string. Write a catch block which is able to catch a gneric exception but can also differentiate between these two types of error.
 
-
+// Constructor for FileNotOpenException exception class
+//
+//#include "FileNotOpenException.hpp"
+//
+//FileNotOpenException::FileNotOpenException(std::string probStringDerived) : Exception("Cannot open file", probStringDerived)
+//{
+//    problemString=probStringDerived;
+//}
+//
+//// Constructor for FileNotOpenException exception class
+//
+//#include "OutOfRangeException.hpp"
+//
+//OutOfRangeException::OutOfRangeException(std::string probStringDerived) : Exception("File out of range", probStringDerived)
+//{
+//    problemString=probStringDerived;
+//}
 
 // Section 9.5 - Test-Driven Development
 // -------------------------------------
@@ -83,70 +172,81 @@ using namespace std;
 
 // When an error occurs we want the code to throw a one work summary of the problem type and a more lengthy description of the error. We write a class 'Exception' to store these two pieces of information with the ability to print this information when required.
 
-#include "Exception.hpp"
-
-
-// Constructor for exception class
-
-Exception::Exception(std::string tagString, std::string probString)
-{
-    mTag = tagString;
-    mProblem = probString;
-}
-
-// Constructor for FileNotOpenException exception class
-
-#include "FileNotOpenException.hpp"
-
-FileNotOpenException::Exception(std::string probString)
-{
-     mTag = "File not open";
-     mProblem = probString;
-}
-
-// Exception print function 
-
-void Exception::PrintDebug() const
-{
-    std::cerr << "** Error ("<<mTag<<") **\n";
-    std::cerr << "Problem: " <<mProblem<< "\n\n";
-}
-
-
-// Listing 3.4 we read from an output file. We assume that the file exists and throw an error if it did not. Below is a more sophisticate read function
-
-void ReadFile(const std::string& fileName, double x[], double y[])
-{
-    std::ifstream read_file(fileName.c_str());
-    if (read_file.is_open() == false)
-    {
-        throw (Exception("FILE", "File can't be opened"));
-    }
-    for (int i=0; i<6; i++)
-    {
-        read_file >> x[i] >> y[i];
-    }
-    read_file.close();
-    
-    std::cout << fileName << " read successfully\n";
-}
-
-int main(int argc, char* argv[])
-{
-    double x[6], y[6];
-    try {
-        ReadFile("Output.dat", x, y);
-    } catch (Exception& error)
-    {
-        error.PrintDebug();
-        std::cout << "Couldn't open Output.dat\n";
-        std::cout << "Give alternative location\n";
-        std::string file_name;
-        std::cin >> file_name;
-        ReadFile(file_name, x, y);
-    }
-    
-}
+//#include "Exception.hpp"
+//
+//
+//// Constructor for exception class
+//
+//Exception::Exception(std::string tagString, std::string probString)
+//{
+//    mTag = tagString;
+//    mProblem = probString;
+//}
+//
+//// Constructor for FileNotOpenException exception class
+//
+//#include "FileNotOpenException.hpp"
+//
+//FileNotOpenException::FileNotOpenException(std::string probStringDerived) : Exception("Cannot open file", probStringDerived)
+//{
+//    problemString=probStringDerived;
+//}
+//
+//// Constructor for FileNotOpenException exception class
+//
+//#include "OutOfRangeException.hpp"
+//
+//OutOfRangeException::OutOfRangeException(std::string probStringDerived) : Exception("File out of range", probStringDerived)
+//{
+//    problemString=probStringDerived;
+//}
+//
+//// Exception print function 
+//
+//void Exception::PrintDebug() const
+//{
+//    std::cerr << "** Error ("<<mTag<<") **\n";
+//    std::cerr << "Problem: " <<mProblem<< "\n\n";
+//}
+//
+//
+//// Listing 3.4 we read from an output file. We assume that the file exists and throw an error if it did not. Below is a more sophisticate read function
+//
+//void ReadFile(const std::string& fileName, double x[], double y[])
+//{
+//    std::ifstream read_file(fileName.c_str());
+//    if (read_file.is_open() == false)
+//    {
+//        throw (Exception("FILE", "File can't be opened"));
+//    }
+//    for (int i=0; i<6; i++)
+//    {
+//        read_file >> x[i] >> y[i];
+//    }
+//    read_file.close();
+//    
+//    std::cout << fileName << " read successfully\n";
+//}
+//
+//int main(int argc, char* argv[])
+//{
+//    double x[6], y[6];
+//     try {
+//        ReadFile("Output.dat", x, y);
+//    } catch (Exception& error)
+//    {
+//        // FileNotOpenException err("File can't be opened");
+//        // exception.PrintDebug();
+//        // Exception& error;
+//        error.PrintDebug();
+//        std::cout << "Couldn't open Output.dat\n";
+//        std::cout << "Give alternative location\n";
+//        std::string file_name;
+//        std::cin >> file_name;
+//        ReadFile(file_name, x, y);
+//   }
+//    return 0;
+//}
 
 /************************************************************************
  ************************************************************************

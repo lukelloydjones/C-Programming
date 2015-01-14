@@ -38,8 +38,9 @@
 		0DA126EE1A1D61AA004C86E3 /* GraduateStudent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GraduateStudent.hpp; sourceTree = "<group>"; };
 		0DA126EF1A1D66DA004C86E3 /* PhDStudent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PhDStudent.hpp; sourceTree = "<group>"; };
 		0DA75BAD1A5A181200FB7C86 /* RainyDays.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RainyDays.hpp; sourceTree = "<group>"; };
-		0DAF006019BD72B400B74AB2 /* practice */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = practice; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DAF006019BD72B400B74AB2 /* practice */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = practice; path = /Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Practice/build/Debug/practice; sourceTree = "<absolute>"; };
 		0DAF006319BD72B400B74AB2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		0DED846F1A662FF300870F2E /* en */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = en; path = en.lproj/practice; sourceTree = "<group>"; };
 		0DF02A931A5FAD3500DC236A /* Exception.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Exception.hpp; sourceTree = "<group>"; };
 		0DF85EE41A147F890096DF47 /* TwoByTwo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TwoByTwo.hpp; sourceTree = "<group>"; };
 		C565DBF41A16D7D700A69491 /* Ebook.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Ebook.hpp; sourceTree = "<group>"; };
@@ -71,7 +72,7 @@
 		0DAF006119BD72B400B74AB2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0DAF006019BD72B400B74AB2 /* practice */,
+				0DED84701A662FF300870F2E /* practice */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -162,6 +163,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0DED84701A662FF300870F2E /* practice */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0DED846F1A662FF300870F2E /* en */,
+			);
+			name = practice;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0DAF006719BD72B400B74AB2 /* Debug */ = {
