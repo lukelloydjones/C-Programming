@@ -12,13 +12,16 @@
 class AbstractOdeSolver
 {
 private:
+    
+    // Set the private elements
+    
     double mstepsize;    // h
     double minitialTime; // T0
     double mfinalTime;   // T1
     double minitialValue; // Y0
 public:
     
-    // Set the private elements
+    // Set the public elements
     
     void SetStepSize(double h);
     void SetTimeInterval(double t0, double t1);

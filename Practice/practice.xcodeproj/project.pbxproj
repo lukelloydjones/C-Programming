@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D8832C61A67473100B0F9DE /* OdeSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D8832C41A67473100B0F9DE /* OdeSolver.cpp */; };
 		0DAF006419BD72B400B74AB2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF006319BD72B400B74AB2 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -34,11 +35,12 @@
 		0D6873181A089BB800183FD4 /* Book2.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Book2.hpp; sourceTree = "<group>"; };
 		0D6873191A09855500183FD4 /* ExampleClass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ExampleClass.hpp; sourceTree = "<group>"; };
 		0D81D2161A031C200062A742 /* Book.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Book.hpp; sourceTree = "<group>"; };
+		0D8832C31A67465A00B0F9DE /* practice */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = practice; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D8832C41A67473100B0F9DE /* OdeSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OdeSolver.cpp; sourceTree = "<group>"; };
 		0DA126ED1A1D5724004C86E3 /* UniStudent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UniStudent.hpp; sourceTree = "<group>"; };
 		0DA126EE1A1D61AA004C86E3 /* GraduateStudent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GraduateStudent.hpp; sourceTree = "<group>"; };
 		0DA126EF1A1D66DA004C86E3 /* PhDStudent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PhDStudent.hpp; sourceTree = "<group>"; };
 		0DA75BAD1A5A181200FB7C86 /* RainyDays.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RainyDays.hpp; sourceTree = "<group>"; };
-		0DAF006019BD72B400B74AB2 /* practice */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = practice; path = /Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Practice/build/Debug/practice; sourceTree = "<absolute>"; };
 		0DAF006319BD72B400B74AB2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		0DED846F1A662FF300870F2E /* en */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = en; path = en.lproj/practice; sourceTree = "<group>"; };
 		0DF02A931A5FAD3500DC236A /* Exception.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Exception.hpp; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				0DED84701A662FF300870F2E /* practice */,
+				0D8832C31A67465A00B0F9DE /* practice */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,6 +83,10 @@
 		0DAF006219BD72B400B74AB2 /* practice */ = {
 			isa = PBXGroup;
 			children = (
+				0D8832C41A67473100B0F9DE /* OdeSolver.cpp */,
+				0D1952571A1ACD1400AC63C3 /* AbstractOdeSolver.hpp */,
+				0D3ACAE91A3146EC00A70A41 /* ForwardEulerSolver.hpp */,
+				0D3ACAEA1A316CBF00A70A41 /* RungeKuttaSolver.hpp */,
 				0DAF006319BD72B400B74AB2 /* main.cpp */,
 				0D18DF9F1A64F609009A57FE /* FileNotOpenException.hpp */,
 				0D18DF9E1A64F58D009A57FE /* OutOfRangeException.hpp */,
@@ -89,9 +96,6 @@
 				0DA75BAD1A5A181200FB7C86 /* RainyDays.hpp */,
 				0D42DAB51A37B132004A2801 /* GetMaximum.hpp */,
 				0D42DAB41A37AD99004A2801 /* DoubleVector.hpp */,
-				0D1952571A1ACD1400AC63C3 /* AbstractOdeSolver.hpp */,
-				0D3ACAE91A3146EC00A70A41 /* ForwardEulerSolver.hpp */,
-				0D3ACAEA1A316CBF00A70A41 /* RungeKuttaSolver.hpp */,
 				0DA126ED1A1D5724004C86E3 /* UniStudent.hpp */,
 				0DA126EE1A1D61AA004C86E3 /* GraduateStudent.hpp */,
 				C565DBF61A16E78400A69491 /* Guest.hpp */,
@@ -124,7 +128,7 @@
 			);
 			name = practice;
 			productName = practice;
-			productReference = 0DAF006019BD72B400B74AB2 /* practice */;
+			productReference = 0D8832C31A67465A00B0F9DE /* practice */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -159,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0DAF006419BD72B400B74AB2 /* main.cpp in Sources */,
+				0D8832C61A67473100B0F9DE /* OdeSolver.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
