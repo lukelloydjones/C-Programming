@@ -1,8 +1,7 @@
 dependencies: \
-  /Users/uqllloyd/Dropbox/Post_Doc_QBI/C++_Prog/practice/practice/main.cpp \
-  /Users/uqllloyd/Dropbox/Post_Doc_QBI/C++_Prog/practice/practice/Point2d.hpp \
-  /Users/uqllloyd/Dropbox/Post_Doc_QBI/C++_Prog/practice/practice/ComplexNumber.hpp \
-  /Users/uqllloyd/Dropbox/Post_Doc_QBI/C++_Prog/practice/practice/DoubleVector.hpp \
-  /Users/uqllloyd/Dropbox/Post_Doc_QBI/C++_Prog/practice/practice/Guest.hpp \
-  /Users/uqllloyd/Dropbox/Post_Doc_QBI/C++_Prog/practice/practice/SpecialGuest.hpp \
-  /Users/uqllloyd/Dropbox/Post_Doc_QBI/C++_Prog/practice/practice/TwoByTwo.hpp
+  /Users/hayleywise/Dropbox/Git_Repos/CPP_Programming/practice/practice/main.cpp \
+  /Users/hayleywise/Dropbox/Git_Repos/CPP_Programming/practice/practice/ComplexNumber.hpp \
+  /Users/hayleywise/Dropbox/Git_Repos/CPP_Programming/practice/practice/DoubleVector.hpp \
+  /Users/hayleywise/Dropbox/Git_Repos/CPP_Programming/practice/practice/Guest.hpp \
+  /Users/hayleywise/Dropbox/Git_Repos/CPP_Programming/practice/practice/SpecialGuest.hpp \
+  /Users/hayleywise/Dropbox/Git_Repos/CPP_Programming/practice/practice/TwoByTwo.hpp
