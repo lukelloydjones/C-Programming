@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D00412A1A6CE2BD0070D1A0 /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D0041281A6CE2BD0070D1A0 /* Vector.cpp */; };
 		0D8832C61A67473100B0F9DE /* OdeSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D8832C41A67473100B0F9DE /* OdeSolver.cpp */; };
 		0DAF006419BD72B400B74AB2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF006319BD72B400B74AB2 /* main.cpp */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D0041271A6CE04A0070D1A0 /* Vector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Vector.hpp; sourceTree = "<group>"; };
+		0D0041281A6CE2BD0070D1A0 /* Vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector.cpp; sourceTree = "<group>"; };
 		0D18DF9E1A64F58D009A57FE /* OutOfRangeException.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OutOfRangeException.hpp; sourceTree = "<group>"; };
 		0D18DF9F1A64F609009A57FE /* FileNotOpenException.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FileNotOpenException.hpp; sourceTree = "<group>"; };
 		0D1952571A1ACD1400AC63C3 /* AbstractOdeSolver.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AbstractOdeSolver.hpp; sourceTree = "<group>"; };
@@ -83,11 +86,13 @@
 		0DAF006219BD72B400B74AB2 /* practice */ = {
 			isa = PBXGroup;
 			children = (
+				0DAF006319BD72B400B74AB2 /* main.cpp */,
 				0D8832C41A67473100B0F9DE /* OdeSolver.cpp */,
 				0D1952571A1ACD1400AC63C3 /* AbstractOdeSolver.hpp */,
+				0D0041281A6CE2BD0070D1A0 /* Vector.cpp */,
+				0D0041271A6CE04A0070D1A0 /* Vector.hpp */,
 				0D3ACAE91A3146EC00A70A41 /* ForwardEulerSolver.hpp */,
 				0D3ACAEA1A316CBF00A70A41 /* RungeKuttaSolver.hpp */,
-				0DAF006319BD72B400B74AB2 /* main.cpp */,
 				0D18DF9F1A64F609009A57FE /* FileNotOpenException.hpp */,
 				0D18DF9E1A64F58D009A57FE /* OutOfRangeException.hpp */,
 				0DF02A931A5FAD3500DC236A /* Exception.hpp */,
@@ -164,6 +169,7 @@
 			files = (
 				0DAF006419BD72B400B74AB2 /* main.cpp in Sources */,
 				0D8832C61A67473100B0F9DE /* OdeSolver.cpp in Sources */,
+				0D00412A1A6CE2BD0070D1A0 /* Vector.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

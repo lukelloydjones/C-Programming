@@ -30,6 +30,21 @@ using namespace std;
 /************************************************************************
  ************************************************************************
  **                                                                    **
+ **            Chapter 10 - Classes for Linear Algebra                 **
+ **                                                                    **
+ ************************************************************************
+ ************************************************************************/
+
+// Develop classes that allow us to perform linear algebra calculations
+// Develop a class of vectors called Vector, Matrix, LinearSystem. The
+// vector and matrix classes will include constructors and destructors
+// that handle memory management. We will overload the assignment,
+// addition, subtraction and multiplication operators.
+
+
+/************************************************************************
+ ************************************************************************
+ **                                                                    **
  **            Chapter 9 - Errors and Exceptions                       **
  **                                                                    **
  ************************************************************************
