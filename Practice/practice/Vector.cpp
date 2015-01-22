@@ -11,6 +11,21 @@
 #include <cassert>
 #include "Vector.hpp"
 
+// Section 10.2 - Constructors and Destructors
+// -------------------------------------------
+
+// Encourage that the reader ensure that when dynamically
+// allocation memory that every new statement is matched
+// with a delete statement. If this is not done then
+// the code may consume large amount of available memory
+// Eventually the computer will run out of memory preventing
+// the code from running further. Writing appropriate
+// constructors and destructors for the vector and matric
+// classes allows us to automatically match a delete statement
+// through the calling of a destructor when the object goes out
+// of scope. With every new statement hidden from the user of the
+// class in a constructor.
+
 // Overidden copy constructor
 // Allocates memory for new vector, and copies
 // entries of other vector into it
@@ -29,12 +44,15 @@ Vector::Vector(const Vector& otherVector)
 // Allocates memory, and initialises entries
 // to zero
 
+// Vector class allocates memory to  store a given vector
+// when it is called.
+
 Vector::Vector(int size)
 {
     assert(size > 0);
     mSize = size;
     mData = new double [mSize];
-    for (int i=0; i<mSize; i++)
+    for (int i=0; i < mSize; i++)
     {
         mData[i] = 0.0;
     }
