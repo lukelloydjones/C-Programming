@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <algorithm>
-#include <fstream>
 #include <iomanip>  // setprecision()
 #include <string>
 #include <vector>

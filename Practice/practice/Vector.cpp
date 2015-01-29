@@ -34,7 +34,7 @@ Vector::Vector(const Vector& otherVector)
 {
     mSize = otherVector.GetSize();
     mData = new double [mSize];
-    for (int i=0; i<mSize; i++)
+    for (int i = 0; i < mSize; i++)
     {
         mData[i] = otherVector.mData[i];
     }
