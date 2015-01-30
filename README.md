@@ -1,2 +1,2 @@
 # CPP_Programming
-This repository contain all my personal C++ practice and programming 
+This repository contains all my personal C++ practice and programming 
