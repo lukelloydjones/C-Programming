@@ -14,7 +14,7 @@
 // Section 10.2 - Constructors and Destructors
 // -------------------------------------------
 
-// Encourage that the reader ensure that when dynamically
+// Encourage that the reader ensures that when dynamically
 // allocation memory that every new statement is matched
 // with a delete statement. If this is not done then
 // the code may consume large amount of available memory
@@ -89,7 +89,7 @@ double& Vector::operator[](int i)
 // Note that this uses 'zero-based' indexing,
 // and a check on the validity of the index
 
-double Vector::Read(int i)const
+double Vector::Read(int i) const
 {
     assert(i > -1);
     assert(i < mSize);
@@ -111,7 +111,8 @@ double& Vector::operator()(int i)
 
 // Overloading the assignment operator
 // Make each element equal to the another
-// vectors elements
+// vectors elements. Check that the size of the LHS
+// vector is the same as the RHS vector.
 
 Vector& Vector::operator=(const Vector& otherVector)
 {
@@ -178,6 +179,16 @@ Vector Vector::operator*(double a) const
     return v;
 }
 
+
+// Overloading scalar multiplcation for the left hand side
+// We use a friend function.
+
+Vector operator * (double a, Vector& v) {
+    
+    return v * a;
+}
+
+
 // Method to calculate norm (with default value p=2)
 // corresponding to the Euclidean norm
 
@@ -196,6 +207,10 @@ double Vector::CalculateNorm(int p) const
 
 
 // MATLAB style friend to get the size of a vector
+// This friend component allows it to read the
+// privat element mSize. We use const for the
+// vector reference so that the vector passed
+// is not changed.
 
 int length(const Vector& v)
 {

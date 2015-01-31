@@ -27,7 +27,8 @@ public:
     Vector operator - () const;        // Overlaod - unary operator
     Vector operator + (const Vector& v1) const;        // Overlaod + binary operator
     Vector operator - (const Vector& v1) const;        // Overlaod - binary operator
-    Vector operator * (double a) const;// Scalar Multiplication
+    Vector operator*(double a) const;
+    friend Vector operator * (double a, Vector& v1);
     double CalculateNorm(int p=2) const; // p-2-norm method
     friend int length(const Vector& v); // Length friend funtion
 };
@@ -35,5 +36,6 @@ public:
 // Prototype signature of length() friend function
 
 int length(const Vector& v);
+Vector operator * (double a, Vector& v1);
 
 #endif
