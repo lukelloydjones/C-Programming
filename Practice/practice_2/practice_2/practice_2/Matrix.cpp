@@ -11,11 +11,13 @@ Matrix::Matrix(const Matrix& otherMatrix)
 {
    mNumRows = otherMatrix.mNumRows;
    mNumCols = otherMatrix.mNumCols;
+   // Memory allocation
    mData = new double* [mNumRows];
    for (int i=0; i<mNumRows; i++)
    {
       mData[i] = new double [mNumCols];
    }
+   // Copying
    for (int i=0; i < mNumRows; i++)
    {
       for (int j=0; j < mNumCols; j++)
@@ -36,10 +38,12 @@ Matrix::Matrix(int numRows, int numCols)
    mNumRows = numRows;
    mNumCols = numCols;
    mData = new double* [mNumRows];
+   // Memory allocation
    for (int i=0; i< mNumRows; i++)
    {
       mData[i] = new double [mNumCols];
    }
+   // Initialise to 0
    for (int i=0; i < mNumRows; i++)
    {
       for (int j=0; j < mNumCols; j++)
@@ -78,21 +82,21 @@ int Matrix::GetNumberOfColumns() const
 double& Matrix::operator()(int i, int j)
 {
    assert(i > 0);
-   assert(i < mNumRows+1);
+   assert(i < mNumRows + 1);
    assert(j > 0);
-   assert(j < mNumCols+1);
-   return mData[i-1][j-1];
+   assert(j < mNumCols + 1);
+   return mData[i - 1][j - 1];
 }
 
 // Overloading the assignment operator
-Matrix& Matrix::operator=(const Matrix& otherMatrix)
+Matrix& Matrix::operator = (const Matrix& otherMatrix)
 {
    assert(mNumRows = otherMatrix.mNumRows);
    assert(mNumCols = otherMatrix.mNumCols);
 
-   for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i < mNumRows; i++)
    {
-      for (int j=0; j<mNumCols; j++)
+      for (int j = 0; j < mNumCols; j++)
       {
          mData[i][j] = otherMatrix.mData[i][j];
       }
@@ -104,11 +108,11 @@ Matrix& Matrix::operator=(const Matrix& otherMatrix)
 Matrix Matrix::operator+() const
 {
    Matrix mat(mNumRows, mNumCols);
-   for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i < mNumRows; i++)
    {
-      for (int j=0; j<mNumCols; j++)
+      for (int j = 0; j < mNumCols; j++)
       {
-         mat(i+1,j+1) = mData[i][j];
+         mat(i + 1,j + 1) = mData[i][j];
       }
    }
    return mat;
@@ -118,11 +122,11 @@ Matrix Matrix::operator+() const
 Matrix Matrix::operator-() const
 {
    Matrix mat(mNumRows, mNumCols);
-   for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i < mNumRows; i++)
    {
-      for (int j=0; j<mNumCols; j++)
+      for (int j = 0; j < mNumCols; j++)
       {
-         mat(i+1,j+1) = -mData[i][j];
+         mat(i + 1,j + 1) = -mData[i][j];
       }
    }
    return mat;
@@ -134,11 +138,11 @@ Matrix Matrix::operator+(const Matrix& m1) const
    assert(mNumRows == m1.mNumRows);
    assert(mNumCols == m1.mNumCols);
    Matrix mat(mNumRows, mNumCols);
-   for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i<mNumRows; i++)
    {
-      for (int j=0; j<mNumCols; j++)
+      for (int j = 0; j<mNumCols; j++)
       {
-         mat(i+1,j+1) = mData[i][j] + m1.mData[i][j];
+         mat(i + 1,j + 1) = mData[i][j] + m1.mData[i][j];
       }
    }
    return mat;
@@ -150,11 +154,11 @@ Matrix Matrix::operator-(const Matrix& m1) const
    assert(mNumRows == m1.mNumRows);
    assert(mNumCols == m1.mNumCols);
    Matrix mat(mNumRows, mNumCols);
-   for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i < mNumRows; i++)
    {
-      for (int j=0; j<mNumCols; j++)
+      for (int j = 0; j < mNumCols; j++)
       {
-         mat(i+1,j+1) = mData[i][j] - m1.mData[i][j];
+         mat(i + 1,j + 1) = mData[i][j] - m1.mData[i][j];
       }
    }
    return mat;
@@ -164,11 +168,11 @@ Matrix Matrix::operator-(const Matrix& m1) const
 Matrix Matrix::operator*(double a) const
 {
    Matrix mat(mNumRows, mNumCols);
-   for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i < mNumRows; i++)
    {
-      for (int j=0; j<mNumCols; j++)
+      for (int j = 0; j < mNumCols; j++)
       {
-         mat(i+1,j+1) = a*mData[i][j];
+         mat(i + 1,j + 1) = a * mData[i][j];
       }
    }
    return mat;
@@ -211,6 +215,25 @@ Vector operator*(const Vector& v, const Matrix& m)
 
    return new_vector;
 }
+
+// Overloading element wise matrix multiplication
+Matrix operator*(const Matrix& X, const Matrix& Y)
+{
+    assert(X.GetNumberOfRows() == Y.GetNumberOfRows());
+    assert(X.GetNumberOfColumns() == Y.GetNumberOfColumns());
+    Matrix new_matrix(X.GetNumberOfRows(), X.GetNumberOfColumns());
+    
+    for (int i=0; i<new_vector_length; i++)
+    {
+        for (int j=0; j<original_vector_size; j++)
+        {
+            new_vector[i] += v.Read(j)*m.mData[j][i];
+        }
+    }
+    
+    return new_vector;
+}
+
 
 // Calculate determinant of square matrix recursively
 double Matrix::CalculateDeterminant() const
