@@ -39,18 +39,53 @@ int main(int argc, char* argv[])
     Matrix X(2, 2);
     Vector b(2);
     Vector y(2);
+    Matrix Y(4,4);
+    Matrix Z(4,4);
+    
+    // Define the X matrix
     
     X(1, 1) = 1; X(1, 2) = 2; X(2, 1) = 3; X(2, 2) = 4;
+    
+    // Print an element of the X matrix
+    
     std::cout << X(1, 1) << "\n";
+    
+    // Define the b vector
     
     b(1) = 0.5;  b(2) = 2.5;
     
+    // Let the y vector be the product of b and X
+    
     y = b*X;
     
+    // Define Y to be equal to k*X
+    
+    double k = 5.8;
+    
+    Y = X*k;
+    
+    // Print some elements
+    
     std::cout << y(1) << "\t" << y(2) << "\n";
+    std::cout << Y(1, 1) << "\t" << Y(2, 2) << "\n";
+    std::cout << "\n";
     
+    // Do matrix multiplication element wise
     
-    std::cout << X.CalculateDeterminant() << "\n";
+    Z = Y * X;
+    
+    std::cout << Z(1, 1) << "\t" << Z(1, 2) << "\n";
+    std::cout << Z(2, 1) << "\t" << Z(2, 2) << "\n";
+    std::cout << "\n";
+    
+    // Do proper matrix multiplication
+    
+    Z = Multiply(X, Y);
+    
+    std::cout << Z(1, 1) << "\t" << Z(1, 2) << "\n";
+    std::cout << Z(2, 1) << " \t" << Z(2, 2) << "\n";
+    
+    // std::cout << X.CalculateDeterminant() << "\n";
 }
 
 

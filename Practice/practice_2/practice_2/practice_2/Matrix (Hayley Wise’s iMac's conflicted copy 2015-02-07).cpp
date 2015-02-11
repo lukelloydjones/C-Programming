@@ -11,13 +11,11 @@ Matrix::Matrix(const Matrix& otherMatrix)
 {
    mNumRows = otherMatrix.mNumRows;
    mNumCols = otherMatrix.mNumCols;
-   // Memory allocation
    mData = new double* [mNumRows];
    for (int i=0; i<mNumRows; i++)
    {
       mData[i] = new double [mNumCols];
    }
-   // Copying
    for (int i=0; i < mNumRows; i++)
    {
       for (int j=0; j < mNumCols; j++)
@@ -38,12 +36,10 @@ Matrix::Matrix(int numRows, int numCols)
    mNumRows = numRows;
    mNumCols = numCols;
    mData = new double* [mNumRows];
-   // Memory allocation
    for (int i=0; i< mNumRows; i++)
    {
       mData[i] = new double [mNumCols];
    }
-   // Initialise to 0
    for (int i=0; i < mNumRows; i++)
    {
       for (int j=0; j < mNumCols; j++)
@@ -82,21 +78,21 @@ int Matrix::GetNumberOfColumns() const
 double& Matrix::operator()(int i, int j)
 {
    assert(i > 0);
-   assert(i < mNumRows + 1);
+   assert(i < mNumRows+1);
    assert(j > 0);
-   assert(j < mNumCols + 1);
-   return mData[i - 1][j - 1];
+   assert(j < mNumCols+1);
+   return mData[i-1][j-1];
 }
 
 // Overloading the assignment operator
-Matrix& Matrix::operator = (const Matrix& otherMatrix)
+Matrix& Matrix::operator=(const Matrix& otherMatrix)
 {
    assert(mNumRows = otherMatrix.mNumRows);
    assert(mNumCols = otherMatrix.mNumCols);
 
-   for (int i = 0; i < mNumRows; i++)
+   for (int i=0; i<mNumRows; i++)
    {
-      for (int j = 0; j < mNumCols; j++)
+      for (int j=0; j<mNumCols; j++)
       {
          mData[i][j] = otherMatrix.mData[i][j];
       }
@@ -108,11 +104,11 @@ Matrix& Matrix::operator = (const Matrix& otherMatrix)
 Matrix Matrix::operator+() const
 {
    Matrix mat(mNumRows, mNumCols);
-   for (int i = 0; i < mNumRows; i++)
+   for (int i=0; i<mNumRows; i++)
    {
-      for (int j = 0; j < mNumCols; j++)
+      for (int j=0; j<mNumCols; j++)
       {
-         mat(i + 1,j + 1) = mData[i][j];
+         mat(i+1,j+1) = mData[i][j];
       }
    }
    return mat;
@@ -122,11 +118,11 @@ Matrix Matrix::operator+() const
 Matrix Matrix::operator-() const
 {
    Matrix mat(mNumRows, mNumCols);
-   for (int i = 0; i < mNumRows; i++)
+   for (int i=0; i<mNumRows; i++)
    {
-      for (int j = 0; j < mNumCols; j++)
+      for (int j=0; j<mNumCols; j++)
       {
-         mat(i + 1,j + 1) = -mData[i][j];
+         mat(i+1,j+1) = -mData[i][j];
       }
    }
    return mat;
@@ -138,11 +134,11 @@ Matrix Matrix::operator+(const Matrix& m1) const
    assert(mNumRows == m1.mNumRows);
    assert(mNumCols == m1.mNumCols);
    Matrix mat(mNumRows, mNumCols);
-   for (int i = 0; i<mNumRows; i++)
+   for (int i=0; i<mNumRows; i++)
    {
-      for (int j = 0; j<mNumCols; j++)
+      for (int j=0; j<mNumCols; j++)
       {
-         mat(i + 1,j + 1) = mData[i][j] + m1.mData[i][j];
+         mat(i+1,j+1) = mData[i][j] + m1.mData[i][j];
       }
    }
    return mat;
@@ -154,11 +150,11 @@ Matrix Matrix::operator-(const Matrix& m1) const
    assert(mNumRows == m1.mNumRows);
    assert(mNumCols == m1.mNumCols);
    Matrix mat(mNumRows, mNumCols);
-   for (int i = 0; i < mNumRows; i++)
+   for (int i=0; i<mNumRows; i++)
    {
-      for (int j = 0; j < mNumCols; j++)
+      for (int j=0; j<mNumCols; j++)
       {
-         mat(i + 1,j + 1) = mData[i][j] - m1.mData[i][j];
+         mat(i+1,j+1) = mData[i][j] - m1.mData[i][j];
       }
    }
    return mat;
@@ -168,14 +164,34 @@ Matrix Matrix::operator-(const Matrix& m1) const
 Matrix Matrix::operator*(double a) const
 {
    Matrix mat(mNumRows, mNumCols);
-   for (int i = 0; i < mNumRows; i++)
+   for (int i=0; i<mNumRows; i++)
    {
-      for (int j = 0; j < mNumCols; j++)
+      for (int j=0; j<mNumCols; j++)
       {
-         mat(i + 1,j + 1) = a * mData[i][j];
+         mat(i+1,j+1) = a*mData[i][j];
       }
    }
    return mat;
+}
+
+// Element wise multiplication
+
+Matrix operator*(const Matrix& X, const Matrix& Y)
+{
+    assert(X.GetNumberOfRows() == Y.GetNumberOfRows());
+    assert(X.GetNumberOfColumns() == Y.GetNumberOfColumns());
+    
+    Matrix new_matrix(X.GetNumberOfRows(), X.GetNumberOfColumns());
+    
+    for (int i=0; i < X.GetNumberOfRows(); i++)
+    {
+        for (int j=0; j < X.GetNumberOfColumns(); j++)
+        {
+            new_matrix(i, j) = X.mData[i][j]*Y.mData[i][j];
+        }
+    }
+    
+    return new_matrix;
 }
 
 // Overloading matrix multiplied by a vector
@@ -216,25 +232,6 @@ Vector operator*(const Vector& v, const Matrix& m)
    return new_vector;
 }
 
-// Overloading element wise matrix multiplication
-Matrix operator*(const Matrix& X, const Matrix& Y)
-{
-    assert(X.GetNumberOfRows() == Y.GetNumberOfRows());
-    assert(X.GetNumberOfColumns() == Y.GetNumberOfColumns());
-    Matrix new_matrix(X.GetNumberOfRows(), X.GetNumberOfColumns());
-    
-    for (int i=0; i < X.GetNumberOfRows(); i++)
-    {
-        for (int j=0; j <  X.GetNumberOfColumns(); j++)
-        {
-            new_matrix(i + 1, j + 1) = X.mData[i][j] * Y.mData[i][j];
-        }
-    }
-    
-    return new_matrix;
-}
-
-
 // Calculate determinant of square matrix recursively
 double Matrix::CalculateDeterminant() const
 {
@@ -272,38 +269,5 @@ double Matrix::CalculateDeterminant() const
    }
    return determinant;
 }
-
-
-
-
-// Matrix multiplication of two matrices
-
-Matrix Multiply(const Matrix& X, const Matrix& Y)
-{
-    // Check the dimensions and create a new matrix
-
-    assert(X.GetNumberOfRows() == Y.GetNumberOfRows());
-    assert(X.GetNumberOfColumns() == Y.GetNumberOfColumns());
-    Matrix new_matrix(X.GetNumberOfRows(), X.GetNumberOfColumns());
-    
-    //Calculate the elements of Matrix as the sum of the product of the elements in A and B
-
-    for (int i = 0; i < X.GetNumberOfColumns(); i++)
-    {
-        for (int j = 0; j < Y.GetNumberOfRows(); j++)
-        {
-            double temp = 0;
-            for (int k = 0; k < X.GetNumberOfColumns(); k++)
-            {
-                temp += X.mData[i][j] * Y.mData[i][j];
-            }
-            new_matrix(i + 1, j + 1) = temp;
-            // std::cout << Matrix[i][j] << "\n";
-        }
-    }
-
-    return new_matrix;
-}
-
 
 //Code from Appendix.tex line 651 save as Matrix.cpp

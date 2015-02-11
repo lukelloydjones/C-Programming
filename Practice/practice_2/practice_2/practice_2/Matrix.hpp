@@ -23,15 +23,20 @@ public:
    // scalar multiplication
    Matrix operator*(double a) const;
    double CalculateDeterminant() const;
+   friend Matrix Multiply(const Matrix& X, const Matrix& Y);
    // declare vector multiplication friendship
    friend Vector operator*(const Matrix& m, 
                            const Vector& v);
    friend Vector operator*(const Vector& v, 
                            const Matrix& m);
+   friend Matrix operator*(const Matrix& X,
+                            const Matrix& Y);
 };
 // prototype signatures for friend operators
 Vector operator*(const Matrix& m, const Vector& v);
 Vector operator*(const Vector& v, const Matrix& m);
+Matrix operator*(const Matrix& X, const Matrix& Y);
+Matrix Multiply(const Matrix& X, const Matrix& Y);
 
 #endif
 //Code from Appendix.tex line 608 save as Matrix.hpp
