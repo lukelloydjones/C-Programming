@@ -1,0 +1,186 @@
+path <- "~/Desktop/BayesR_Sim_Large/BayesR_Simulation_Raw_Files/Step_1_INP_SNPs"
+# Specify the number of SNPs and individuals#
+#
+nsnp <- 1000#
+nind <- 100#
+# Specify an empty matrix to fill and sample uniformly some minor allele frequencies between 0.05 and 0.5#
+snp.mat <- matrix(NA,ncol=nsnp,nrow=nind)#
+gen.freq <- runif(nsnp,0.05,0.5)#
+# Generate the 0, 1, 2 from binomial with the potential successes to be 2#
+#
+for(i in 1:nsnp) #
+{#
+  p <- gen.freq[i]#
+  snp.mat[,i] <- rbinom(nind,2,p)#
+}#
+# Change codes to plink compound genotypes#
+#
+snp.mat[snp.mat==2] <- 22#
+snp.mat[snp.mat==1] <- 12#
+snp.mat[snp.mat==0] <- 11
+# Create the individual ids and mimic a ped file. Then write out as ped file#
+#
+ids <- 1:nind#
+gem <- data.frame(ids,ids,0,0,1,1,snp.mat)#
+write.table(gem,paste(path,"INP_SNPs.ped",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)
+# Write out the gene frequencies#
+#
+gen.freq <- array(0,nsnp)#
+for(i in 1:nsnp)  #
+{#
+ gen.freq[i] <- sum(snp.mat[,i])/(2*nind)#
+}#
+write.table(gen.freq,paste(path,"geno2.freq",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)
+snp.mat
+# Create the individual ids and mimic a ped file. Then write out as ped file#
+#
+ids <- 1:nind#
+gem <- data.frame(ids,ids,0,0,1,1,snp.mat)#
+write.table(gem,paste(path,"INP_SNPs.ped",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)#
+# Write out the gene frequencies#
+#
+gen.freq <- array(0,nsnp)#
+for(i in 1:nsnp)  #
+{#
+ gen.freq[i] <- sum(snp.mat[,i])/(2*nind)#
+}#
+write.table(gen.freq,paste(path,"geno2.freq",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)#
+# Write out the map file#
+#
+pos <- 1:nsnp#
+snps <- paste("snp",1:nsnp,sep="")#
+map <- data.frame(chro=1,snp=snps,d=0,pos=pos)#
+write.table(map,paste(path,"INP_SNPs.map",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)#
+#
+# Run plink to write out a binary file#
+command <- "plink --noweb --file INP_SNPs --compound-genotypes --make-bed --out INP_SNPs"#
+system(command)
+getwd()
+setwd(path)
+# Specify an empty matrix to fill and sample uniformly some minor allele frequencies between 0.05 and 0.5#
+snp.mat <- matrix(NA,ncol=nsnp,nrow=nind)#
+gen.freq <- runif(nsnp,0.05,0.5)#
+# Generate the 0, 1, 2 from binomial with the potential successes to be 2#
+#
+for(i in 1:nsnp) #
+{#
+  p <- gen.freq[i]#
+  snp.mat[,i] <- rbinom(nind,2,p)#
+}#
+# Change codes to plink compound genotypes#
+#
+snp.mat[snp.mat==2] <- 22#
+snp.mat[snp.mat==1] <- 12#
+snp.mat[snp.mat==0] <- 11#
+# Create the individual ids and mimic a ped file. Then write out as ped file#
+#
+ids <- 1:nind#
+gem <- data.frame(ids,ids,0,0,1,1,snp.mat)#
+write.table(gem,paste(path,"INP_SNPs.ped",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)#
+# Write out the gene frequencies#
+#
+gen.freq <- array(0,nsnp)#
+for(i in 1:nsnp)  #
+{#
+ gen.freq[i] <- sum(snp.mat[,i])/(2*nind)#
+}#
+write.table(gen.freq,paste(path,"geno2.freq",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)
+# Write out the map file#
+#
+pos <- 1:nsnp#
+snps <- paste("snp",1:nsnp,sep="")#
+map <- data.frame(chro=1,snp=snps,d=0,pos=pos)#
+write.table(map,paste(path,"INP_SNPs.map",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)
+command <- "plink --noweb --file INP_SNPs --compound-genotypes --make-bed --out INP_SNPs_small"
+system(command)
+getwd()
+gem
+write.table(gem,paste(path,"INP_SNPs.ped",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)
+getwd()
+paste(path,"INP_SNPs.ped",sep="")
+# Create the individual ids and mimic a ped file. Then write out as ped file#
+#
+ids <- 1:nind#
+gem <- data.frame(ids,ids,0,0,1,1,snp.mat)#
+write.table(gem,paste(path,"/INP_SNPs.ped",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)#
+# Write out the gene frequencies#
+#
+gen.freq <- array(0,nsnp)#
+for(i in 1:nsnp)  #
+{#
+ gen.freq[i] <- sum(snp.mat[,i])/(2*nind)#
+}#
+write.table(gen.freq,paste(path,"/geno2.freq",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)#
+# Write out the map file#
+#
+pos <- 1:nsnp#
+snps <- paste("snp",1:nsnp,sep="")#
+map <- data.frame(chro=1,snp=snps,d=0,pos=pos)#
+write.table(map,paste(path,"/INP_SNPs.map",sep=""),col.names=FALSE,row.names=FALSE,quote=FALSE)
+# Run plink to write out a binary file#
+command <- "plink --noweb --file INP_SNPs --compound-genotypes --make-bed --out INP_SNPs_small"#
+system(command)
+pwd
+getwd()
+gem
+# Set the working directories#
+#
+rm(list=ls())#
+setwd("~/Dropbox/Post_Doc_QBI/BayesR/Bayes_R_prog_practice/")
+install.packages("MCMCpack")#
+#install.packages('asbio')#
+#
+# Load the necessary libraries#
+#
+library(asbio)#
+library(MCMCpack)#
+# A function to read in a plink file#
+# A function to read in a plink file#
+# A function to read in a plink file#
+#
+read.plink <- function(root) #
+{#
+    bed.file = paste(root, ".bed", sep = "")#
+    bed.file.size = file.info(bed.file)$size#
+    sample.size = dim(read.table(paste(root, ".fam", sep = "")))[1]#
+    snp.size = ceiling(sample.size/4)#
+    n.snps = round((bed.file.size - 3)/snp.size)#
+    bin.connection = file(bed.file, "rb")#
+    test.bytes = readBin(bin.connection, what = "raw", n = 3)#
+    if (!identical(as.character(test.bytes), c("6c", "1b", "01"))) {#
+        stop("BED file not a v0.99 SNP-major BED file, please re-encode the data as v0.99 SNP-major file")#
+    }#
+    genotypes = matrix(ncol = n.snps, nrow = sample.size)#
+    for (i in 1:n.snps) {#
+        r.bin.snp = readBin(bin.connection, what = "raw", n = snp.size)#
+        bin.snp = matrix(as.numeric(rawToBits(r.bin.snp)), ncol = 2, #
+            byrow = TRUE)[1:sample.size, ]#
+        genotypes[, i] = bin.snp[, 1] + bin.snp[, 2] - 10 * ((bin.snp[, #
+            1] == 1) & (bin.snp[, 2] == 0))#
+    }#
+    genotypes[genotypes == -9] = NA#
+    #snp.names = read.table(paste(root, ".bim", sep = ""))[, 2]#
+    #colnames(genotypes) = snp.names#
+    close(bin.connection)#
+    return(genotypes)#
+}
+getwd()
+system("ls")
+system("cd Test_data")
+system("ls")
+system("ls /Test_Data")
+system("ls /Test_Data/.")
+system("ls /Test_Data/*")
+system("ls /Test_data/*")
+getwd()
+system("ls Test_data/*")
+geno <- read.plink(paste("Test_data/M500_N100_GA1",sep = ""))
+geno
+dim(geno)[2]
+dim(geno)[1]
+write.table(geno, "geno.raw", quote = F, col.names = F, row.names = F)
+getwd()
+setwd("pwd")
+setwd("~/Dropbox/Git_Repos/CPP_Programming/Basic_BayesR/R_Code_Data")
+write.table(geno, "geno.raw", quote = F, col.names = F, row.names = F)
+write.table(geno, "M500_N100_GA1.raw", quote = F, col.names = F, row.names = F)

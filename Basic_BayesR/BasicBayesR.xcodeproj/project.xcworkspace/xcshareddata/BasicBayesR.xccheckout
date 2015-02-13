@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F8D9970B-396A-4EEC-965E-F6BBA232788F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>BasicBayesR</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>05894492177419FE39F078FFF384BC0DC04834B0</key>
+		<string>https://github.com/lukelloydjones/CPP_Programming.git</string>
+		<key>3777EF9C21AD66CC8547BFA09F1DC706D942EE5F</key>
+		<string>https://github.com/lukelloydjones/CAGE_Normalisation_Notes.git</string>
+		<key>BADFA2D7671BCE91D8590BFE30528262382F56F4</key>
+		<string>https://github.com/lukelloydjones/Fisheries_R_Scripts.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Basic_BayesR/BasicBayesR.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>05894492177419FE39F078FFF384BC0DC04834B0</key>
+		<string>../../..</string>
+		<key>3777EF9C21AD66CC8547BFA09F1DC706D942EE5F</key>
+		<string>../../../../CAGE_Norm_Notes</string>
+		<key>BADFA2D7671BCE91D8590BFE30528262382F56F4</key>
+		<string>../../../../Fisheries_R_Scripts</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/lukelloydjones/CPP_Programming.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>05894492177419FE39F078FFF384BC0DC04834B0</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3777EF9C21AD66CC8547BFA09F1DC706D942EE5F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CAGE_Norm_Notes</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>05894492177419FE39F078FFF384BC0DC04834B0</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CPP_Programming</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BADFA2D7671BCE91D8590BFE30528262382F56F4</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Fisheries_R_Scripts</string>
+		</dict>
+	</array>
+</dict>
+</plist>

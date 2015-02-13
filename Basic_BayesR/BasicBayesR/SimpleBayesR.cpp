@@ -1,5 +1,5 @@
 //
-//  main.cpp
+//  Simple_Bayes_R.cpp
 //  practice
 //
 //  Created by Luke Lloyd-Jones on 8/09/2014.
@@ -12,6 +12,7 @@
 #include <cassert>
 #include <fstream>
 #include <sstream>
+#include <ostream>
 #include <array>
 #include <stdio.h>
 #include <cstdlib>
@@ -20,6 +21,7 @@
 #include <string>
 #include <vector>
 #include <cerrno> // something to help with reading in buffers
+#include "/usr/include/armadillo"
 
 // Probably going to need armadillo
 
@@ -28,7 +30,7 @@
 // Set the namespace std
 
 using namespace std;
-
+using namespace arma;
 
 
 
@@ -40,22 +42,6 @@ using namespace std;
  **                                                                    **
  ************************************************************************
  ************************************************************************/
-
-
-// Use dynamic allocation of memory
-
-// Function prototypes
-// -------------------
-
-double** AllocateMatrixMemory(int numRows, int numCols);                                    // Function to allocate memory dynamically
-void FreeMatrixMemory(int numRows, double** matrix);                                        // Function to free dynamically allocated memory
-double** Multiply(double** A, double** B, int nrowA, int ncolA, int nrowB, int ncolB);      // Function to multiply two matrices
-                                                                                            // Function to multiply matrix by a vector
-                                                                                            // Function to calculate the dot product of two vectors
-                                                                                            // Function to draw from chi-squared
-                                                                                            // Function to draw from normal distribution
-                                                                                            // Function to draw from uniform may already be built in
-                                                                                            // Function to sample from a Dirichlet
                                                                                             
 
 
@@ -70,18 +56,7 @@ double** Multiply(double** A, double** B, int nrowA, int ncolA, int nrowB, int n
 
 int main(int argc, char* argv[])
 {
-    // VARIABLE ALLOCATION
-    // -------------------
-    // -------------------
-    
-    
-    // Allocate the variables that will be required in the computation
-    
-    double** A;
-    double** C;
-    int nrow=0;
-    int ncol=0;
-    string line;
+
     
     
     // READ IN THE GENOTYPE AND PHENOTYPE MATRICES
@@ -95,8 +70,12 @@ int main(int argc, char* argv[])
     
     // Open the read file stream and read in the genotype matrix
     
-    ifstream read_file_size ("/Users/hayleywise/Dropbox/Post_Doc_QBI/BayesR/Bayes_R_prog_practice/geno.raw");
+    ifstream read_file_size ("/Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Basic_BayesR/R_Code_Data/M500_N100_GA1.raw");
     
+    // Set some variables
+    string line;
+    int ncol;
+    int nrow = 0;
     
     // Get the size of the matrix stored as a text file
     
@@ -106,24 +85,22 @@ int main(int argc, char* argv[])
     }
     else
     {
-        while(getline(read_file_size,line)) // Get one line of the file and store as string
+        while(getline(read_file_size, line)) // Get one line of the file and store as string
         {
             
             istringstream iss(line); // Make the line into a string stream
             string result;           // Make another string to store the ind elements
-            ncol=0;
-            while(getline(iss,result, ' ')) // Get each element of the stream separated by space
+            ncol = 0;
+            while(getline(iss, result, ' ')) // Get each element of the stream separated by space
             {
-                ncol++;                     // Increment the columns
+                ncol++;                      // Increment the columns
             }
-            nrow++;                         // Increment the rows
+            nrow++;                          // Increment the rows
             
         }
         
     }
     
-    
-    // Print the number of rows and the number of columns of the matrix being read in
     
     cout << "# of Rows in the genotype matrix " << nrow << "\n";
     cout << "# of Cols in the genotype matrix " << ncol << "\n";
@@ -132,46 +109,53 @@ int main(int argc, char* argv[])
     // Flush the read buffer
     
     read_file_size.close(); // Flush the buffer. This is important so that we don't over fill the buffer
+    std::cout.flush();
     
+    mat geno(nrow, ncol);
+
     
-    // Allocate the memory to the matrix.
+    // Read in the genotype matrix and store
     
-    A= AllocateMatrixMemory(nrow,ncol);
-    
-    
-    // Read in the data matrix
-    
-    ifstream read_geno_file ("/Users/hayleywise/Dropbox/Post_Doc_QBI/BayesR/Bayes_R_prog_practice/geno.raw");
+    ifstream read_geno_file ("/Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Basic_BayesR/R_Code_Data/M500_N100_GA1.raw");
     assert(read_geno_file.is_open());
     
-    for (int i=0; i<nrow; i++)
+    for (int i = 0; i < nrow; i++)
     {
-        for (int j=0; j<ncol; j++)
+        for (int j = 0; j < ncol; j++)
         {
-            read_geno_file >> A[i][j];
-            // std::cout << "ith jth element of the A matrix" << A[i][j] << "\n";
+            read_geno_file >> geno(i, j);
         }
     }
     
+    cout << "# of Rows in the genotype matrix " << geno.col(1) << "\n";
     
-    // GENOTYPE MATRIX
-    // ---------------
+    // Close and flush the read buffer
+    
+    read_geno_file.close(); // Flush the buffer. This is important so that we don't over fill the buffer
+    std::cout.flush();
+    
+    
+    // PHENOTYPE VECTOR
+    // ----------------
     
     
     // Open the read file stream and read in the genotype matrix
     
-    ifstream read_file_size ("/Users/hayleywise/Dropbox/Post_Doc_QBI/BayesR/Bayes_R_prog_practice/geno.raw");
+    ifstream read_pheno_size("/Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Basic_BayesR/R_Code_Data/M500_N100_GA1.phen");
     
+    // Reset the number of zeros
+    
+    nrow = 0;
     
     // Get the size of the matrix stored as a text file
     
-    if( !read_file_size)
+    if( !read_pheno_size)
     {
         std::cout << "ERROR: Unable to open file." << endl; //Make sure the file can be read
     }
     else
     {
-        while(getline(read_file_size,line)) // Get one line of the file and store as string
+        while(getline(read_pheno_size,line)) // Get one line of the file and store as string
         {
             
             istringstream iss(line); // Make the line into a string stream
@@ -186,160 +170,136 @@ int main(int argc, char* argv[])
         }
         
     }
-    
+
     
     // Print the number of rows and the number of columns of the matrix being read in
     
-    cout << "# of Rows in the genotype matrix " << nrow << "\n";
-    cout << "# of Cols in the genotype matrix " << ncol << "\n";
+    cout << "# of Rows in the phenotype file " << nrow << "\n";
+    cout << "# of Cols in the phenotype file " << ncol << "\n";
     
     
-    // Flush the read buffer
     
-    read_file_size.close(); // Flush the buffer. This is important so that we don't over fill the buffer
+    // Close and flush the read buffer
     
-    
-    // Allocate the memory to the matrix.
-    
-    A= AllocateMatrixMemory(nrow,ncol);
+    read_pheno_size.close(); // Flush the buffer. This is important so that we don't over fill the buffer
+    std::cout.flush();
     
     
-    // Read in the data matrix
+    // Assign a matrix to the phenotype
     
-    ifstream read_file ("/Users/hayleywise/Dropbox/Post_Doc_QBI/BayesR/Bayes_R_prog_practice/geno.raw");
-    assert(read_file.is_open());
+    mat pheno(nrow, ncol);
+
+
+    // Read in the phenotype matrix
     
-    for (int i=0; i<nrow; i++)
+    ifstream read_pheno("/Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Basic_BayesR/R_Code_Data/M500_N100_GA1.phen");
+    assert(read_pheno.is_open());
+    
+    for (int i=0; i < nrow; i++)
     {
-        for (int j=0; j<ncol; j++)
+        for (int j=0; j < ncol; j++)
         {
-            read_file >> A[i][j];
-            // std::cout << "ith jth element of the A matrix" << A[i][j] << "\n";
+            read_pheno >> pheno(i, j);
+            
         }
     }
     
+
+    // Close and flush the read buffer
+    
+    read_pheno.close(); // Flush the buffer. This is important so that we don't over fill the buffer
+    std::cout.flush();
     
     
-    // WRITING ELEMENTS OF THE PROGRAM OUT
-    // -----------------------------------
-    // -----------------------------------
+    // Define the phenotype to be the third column of the larger pheno matrix
+    
+    mat Y(nrow, 1);
+    Y = pheno.col(2);
+    cout << "pheno.col(3): " << endl << Y << endl;
     
     
-    // Print an element to the screen to check what we are reading in
+    // Set some integer parameters
     
-    std::cout << "First element of the A matrix: " << A[0][0] << "\n";
+    int numit = 50000;			// Number of iterations
+    int burn  = 10000;			// Number of iterations which are burn in
+    int ndist = 4;  			// Number of normal distributions to model
+    int seeds = 222;			// Seed used
+    int ninds = Y.n_rows;       // Number of individuals
+    
+    // Print how many individuals there are
+    cout << "How many inds? " << ninds << endl;
     
     
-    // Do the matrix multiplication
+    // Correct geno for allele frequencies
+    // (currently coded 0,1,2) and store in X
     
-    C= Multiply(A, A, nrow, ncol, nrow, ncol);
+    mat X(geno.n_rows, geno.n_cols);
+    mat temp(1, geno.n_cols);
     
+        
+    // Calculate the allele frequencies
     
-    // Write the matrix result to a file
+    temp = (1.0 / (2.0 * ninds)) * sum(geno);
+    cout << temp << endl;
     
-    std::ofstream write_output("/Users/hayleywise/Dropbox/Post_Doc_QBI/BayesR/Bayes_R_prog_practice/geno.raw"); //Open the write stream
-    assert(write_output.is_open());  // Make sure it's open
+    // Build the new genotype matrix
     
-    for (int i=0; i<nrow; i++)
-    {
-        for (int j=0; j<ncol; j++)
-        {
-            if ((j+1)%ncol==0)
-            {
-                write_output << C[i][j] << "\n";
-            }
-            else
-            {
-                // For those not at the end of a row
-                write_output << C[i][j] << "\t";
-            }
-        }
+    for (int j = 0; j < geno.n_cols; j++) {
+    
+        double q = temp(0, j); // BE CAREFUL FOR A VECTOR 0 INDEX
+        X.col(j) = (geno.col(j) - 2.0 * q) / sqrt(2.0 * q * (1.0 - q));
     }
     
-    
-    // Close the write stream
-    
-    write_output.close();
-    
-    
-    // FREEING MATRIX MEMORY
-    // ---------------------
-    // ---------------------
+    cout << X.col(1) << endl;
     
     
     
-    // Free the matrix memory where the first integer argument is the number of rows of matrix
     
-    FreeMatrixMemory(nrow, A);
+//
+//    // WRITING ELEMENTS OF THE PROGRAM OUT
+//    // -----------------------------------
+//    // -----------------------------------
+//    
+//    
+//    // Print an element to the screen to check what we are reading in
+//    
+//    std::cout << "First element of the A matrix: " << A[0][0] << "\n";
+//    
+//    
+//    // Do the matrix multiplication
+//    
+//    //C= Multiply(A, A, nrow, ncol, nrow, ncol);
+//    
+//    
+//    // Write the matrix result to a file
+//    
+//    std::ofstream write_output("/Users/hayleywise/Dropbox/Post_Doc_QBI/BayesR/Bayes_R_prog_practice/geno.raw"); //Open the write stream
+//    assert(write_output.is_open());  // Make sure it's open
+//    
+//    for (int i=0; i<nrow; i++)
+//    {
+//        for (int j=0; j<ncol; j++)
+//        {
+//            if ((j+1)%ncol==0)
+//            {
+//                write_output << C[i][j] << "\n";
+//            }
+//            else
+//            {
+//                // For those not at the end of a row
+//                write_output << C[i][j] << "\t";
+//            }
+//        }
+//    }
+//    
+//    
+//    // Close the write stream
+//    
+////    write_output.close();
+    
+
     
 }
 
 
 
-// FUNCTIONS
-// ---------
-// ---------
-// ---------
-
-
-// Function to multiple two matrices
-
-
-double** Multiply(double** A, double** B, int nrowA, int ncolA, int nrowB, int ncolB)
-{
-    // Assert that the columns of A and the rows of B match
-    
-    assert (ncolA==nrowB);
-    
-    // Create the matrix to store the matrix product
-    
-    double** Matrix;
-    
-    //Allocate the memory for Matrix
-    
-    Matrix = AllocateMatrixMemory(nrowA, ncolB);
-    
-    //Calculate the elements of Matrix as the sum of the product of the elements in A and B
-    
-    for (int i=0; i<ncolA; i++)
-    {
-        for (int j=0; j<nrowB; j++)
-        {
-            double temp=0;
-            for (int k=0; k<ncolA; k++)
-            {
-                temp += A[i][k]*B[k][j];
-            }
-            Matrix[i][j]=temp;
-            // std::cout << Matrix[i][j] << "\n";
-        }
-    }
-    
-    return Matrix;
-}
-
-
-// Function to allocate memory for a matrix dynamically - can be used for arrays too
-
-double** AllocateMatrixMemory(int numRows, int numCols)
-{
-    double** matrix;
-    matrix = new double* [numRows];  // Allocate the rows
-    for (int i=0; i<numRows; i++)
-    {
-        matrix[i] = new double [numCols]; //Allocate the columns
-    }
-    return matrix;
-}
-
-
-// Function to free memory of a matrix
-
-void FreeMatrixMemory(int numRows, double** matrix)
-{
-    for (int i=0; i<numRows; i++)
-    {
-        delete[] matrix[i]; //Deletes the columns
-    }
-    delete[] matrix;
-}
