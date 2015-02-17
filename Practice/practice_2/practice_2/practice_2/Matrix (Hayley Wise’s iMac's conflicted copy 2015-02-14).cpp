@@ -179,44 +179,44 @@ Matrix Matrix::operator*(double a) const
 }
 
 // Overloading matrix multiplied by a vector
-Vector operator*(const Matrix& m, const Vector& v)
-{
-    int original_vector_size = v.GetSize();
-    assert(m.GetNumberOfColumns() == original_vector_size);
-    int new_vector_length = m.GetNumberOfRows();
-    Vector new_vector(new_vector_length);
-    
-    for (int i=0; i<new_vector_length; i++)
-    {
-        for (int j=0; j<original_vector_size; j++)
-        {
-            new_vector[i] += m.mData[i][j]*v.Read(j, v);
-        }
-    }
-    
-    return new_vector;
-}
+//Vector operator*(const Matrix& m, const Vector& v)
+//{
+//    int original_vector_size = v.GetSize();
+//    assert(m.GetNumberOfColumns() == original_vector_size);
+//    int new_vector_length = m.GetNumberOfRows();
+//    Vector new_vector(new_vector_length);
+//    
+//    for (int i=0; i<new_vector_length; i++)
+//    {
+//        for (int j=0; j<original_vector_size; j++)
+//        {
+//            new_vector[i] += m.mData[i][j]*v.Read(j);
+//        }
+//    }
+//    
+//    return new_vector;
+//}
 
-//// Overloading vector multiplied by a matrix
-Vector operator*(const Vector& v, const Matrix& m)
-{
-    int original_vector_size = v.GetSize();
-    assert(m.GetNumberOfRows() == original_vector_size);
-    int new_vector_length = m.GetNumberOfColumns();
-    Vector new_vector(new_vector_length);
-    
-    for (int i=0; i<new_vector_length; i++)
-    {
-        for (int j=0; j<original_vector_size; j++)
-        {
-            new_vector[i] += v.Read(j, v)*m.mData[j][i];
-        }
-    }
-    
-    return new_vector;
-}
+// Overloading vector multiplied by a matrix
+//Vector operator*(const Vector& v, const Matrix& m)
+//{
+//    int original_vector_size = v.GetSize();
+//    assert(m.GetNumberOfRows() == original_vector_size);
+//    int new_vector_length = m.GetNumberOfColumns();
+//    Vector new_vector(new_vector_length);
+//    
+//    for (int i=0; i<new_vector_length; i++)
+//    {
+//        for (int j=0; j<original_vector_size; j++)
+//        {
+//            new_vector[i] += v.Read(j)*m.mData[j][i];
+//        }
+//    }
+//    
+//    return new_vector;
+//}
 
-//// Overloading element wise matrix multiplication
+// Overloading element wise matrix multiplication
 Matrix operator*(const Matrix& X, const Matrix& Y)
 {
     assert(X.GetNumberOfRows() == Y.GetNumberOfRows());
@@ -301,6 +301,6 @@ Matrix Multiply(const Matrix& X, const Matrix& Y)
             // std::cout << Matrix[i][j] << "\n";
         }
     }
-
+    
     return new_matrix;
 }

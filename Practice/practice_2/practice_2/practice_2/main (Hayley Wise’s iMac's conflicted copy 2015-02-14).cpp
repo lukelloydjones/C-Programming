@@ -9,7 +9,7 @@
 #include <iostream>
 #include "Vector.hpp"
 #include "Matrix.hpp"
-#include "Exception.hpp"
+
 
 
 
@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
     //Matrix X(2, 2);
     Vector b(2);
-    Vector y(3);
+    Vector y(2);
     //Matrix Y(4,4);
     //Matrix Z(4,4);
     
@@ -52,25 +52,11 @@ int main(int argc, char* argv[])
     
     // Define the b vector
     
-    b[0] = 0.5;
-    b[1] = 2.5;
-//    std::cout << b[1] << "\n";
-//    std::cout << b.Read(0, b) << "\n";
+    b[1] = 0.5;
+    std::cout << b[1] << "\n";
+    std::cout << b.Read(3) << "\n";
     //b(2) = 2.5;
-//    std::cout << b.Read(1, b) << "\n";
     
-    std::cout << b << "\n";
-    // std::cout.flush();
-    std::cout << y << "\n";
-//    try {
-//        y=b;
-//    } catch (Exception& error) {
-//        error.PrintDebug();
-//        std::cout << "LHS vector size " << y.GetSize()<< "\n";
-//        std::cout << "RHS vector size " << b.GetSize()<< "\n";
-//
-//    }
-
     // Let the y vector be the product of b and X
     
     //y = b*X;

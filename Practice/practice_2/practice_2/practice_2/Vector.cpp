@@ -10,6 +10,8 @@
 #include <iostream>
 #include <cassert>
 #include "Vector.hpp"
+#include "Exception.hpp"
+// #include "<string>"
 
 // Section 10.2 - Constructors and Destructors
 // -------------------------------------------
@@ -78,7 +80,7 @@ int Vector::GetSize() const
 // Note that this uses ‘zero-based’ indexing,
 // and a check on the validity of the index
 
-double& Vector::operator[](int i)
+double& Vector::operator[](int i) const
 {
     assert(i > -1);
     assert(i < mSize);
@@ -89,19 +91,16 @@ double& Vector::operator[](int i)
 // Note that this uses 'zero-based' indexing,
 // and a check on the validity of the index
 
-double Vector::Read(int i) const
+double Vector::Read(int i, const Vector& v1) const
 {
-    assert(i > -1);
-    assert(i < mSize);
-    return mData[i];
+    return v1[i];
 }
-
 
 // Overloading round brackets
 // Note that this uses 'one-based' indexing,
 // and a check on the validity of the index
 
-double& Vector::operator()(int i)
+double& Vector::operator()(int i) const
 {
     assert(i > 0);
     assert(i < mSize + 1);
@@ -116,7 +115,11 @@ double& Vector::operator()(int i)
 
 Vector& Vector::operator=(const Vector& otherVector)
 {
-    assert(mSize == otherVector.mSize);
+    // assert(mSize == otherVector.mSize);
+    if (mSize != otherVector.mSize)
+    {
+        throw (Exception("VECTOR SIZES", "Size of LHS vector not equal to RHS"));
+    }
     for (int i=0; i < mSize; i++)
     {
         mData[i] = otherVector.mData[i];
@@ -217,6 +220,19 @@ int length(const Vector& v)
     return v.mSize;
 }
 
+
+// Code to write out a vector to the screen
+
+std::ostream& operator<<(std::ostream& output, const Vector& v1)
+{
+    
+    for (int i = 0; i < v1.GetSize(); i++)
+    {
+        output << v1.Read(i, v1) << "\n";
+    }
+    output << std::endl;
+    return output;
+}
 
 
 
