@@ -10,7 +10,7 @@
 #include "Vector.hpp"
 #include "Matrix.hpp"
 #include "Exception.hpp"
-
+#include "LinearSystem.hpp"
 
 
 
@@ -32,19 +32,19 @@
 // Build a matrix class. Then build the linear system class
 
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
     // Declare some instance of the vector class
 
     //Matrix X(2, 2);
     Vector b(2);
     Vector y(3);
-    //Matrix Y(4,4);
+    Matrix X(2,2);
     //Matrix Z(4,4);
     
     // Define the X matrix
     
-    // X(1, 1) = 1; X(1, 2) = 2; X(2, 1) = 3; X(2, 2) = 4;
+    X(1, 1) = 1; X(1, 2) = 2; X(2, 1) = 3; X(2, 2) = 4;
     
     // Print an element of the X matrix
     
@@ -52,16 +52,23 @@ int main(int argc, char* argv[])
     
     // Define the b vector
     
-    b[0] = 0.5;
-    b[1] = 2.5;
+    b(1) = 0.5; b(2) = 3.5;
+    
+    // Define a linear system
+    
+    LinearSystem Xb(X, b);
+    
+    Xb.Solve();
+    std::cout << Xb.Solve() << "\n";
+    
 //    std::cout << b[1] << "\n";
 //    std::cout << b.Read(0, b) << "\n";
     //b(2) = 2.5;
 //    std::cout << b.Read(1, b) << "\n";
     
-    std::cout << b << "\n";
+    //std::cout << b << "\n";
     // std::cout.flush();
-    std::cout << y << "\n";
+    //std::cout << y << "\n";
 //    try {
 //        y=b;
 //    } catch (Exception& error) {

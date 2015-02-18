@@ -21,6 +21,10 @@ public:
 
    // Method for solving system
    virtual Vector Solve();
+    
+   // The virtual keyword is a signal to the compiler that a method
+   // does different things for different derived classes. For different
+   // derived classes you can overide it to do different things
 };
 
 #endif
