@@ -26,6 +26,24 @@ LinearSystem::~LinearSystem()
    delete mpb;
 }
 
+// Methods to get private elements
+
+int LinearSystem::GetSize() const
+{
+    return mSize;
+}
+
+Matrix LinearSystem::GetInputMatrix() const
+{
+     return *mpA;
+}
+
+Vector LinearSystem::GetInputVector() const
+{
+     return *mpb;
+}
+
+
 // Solve linear system using Gaussian elimination
 // This method changes the content of the matrix mpA
 Vector LinearSystem::Solve()

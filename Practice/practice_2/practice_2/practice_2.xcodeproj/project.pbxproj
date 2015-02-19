@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D155E3E1A7A11220084BFD2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D155E3D1A7A11220084BFD2 /* main.cpp */; };
+		0DCEB4BC1A95839800E6F4BF /* PosDefSymmLinearSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0DCEB4BA1A95839800E6F4BF /* PosDefSymmLinearSystem.cpp */; };
 		C5B487561A8F22AA006A9F60 /* Exception.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5B487541A8F22AA006A9F60 /* Exception.cpp */; };
 		C5F0B2B81A7C6CD70085FECE /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5F0B2B41A7C6CD70085FECE /* Matrix.cpp */; };
 		C5F0B2B91A7C6CD70085FECE /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5F0B2B61A7C6CD70085FECE /* Vector.cpp */; };
@@ -29,6 +30,9 @@
 /* Begin PBXFileReference section */
 		0D155E3A1A7A11220084BFD2 /* practice_2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = practice_2; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D155E3D1A7A11220084BFD2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		0DCEB4B91A9582B500E6F4BF /* PosDefSymmLinearSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PosDefSymmLinearSystem.hpp; sourceTree = "<group>"; };
+		0DCEB4BA1A95839800E6F4BF /* PosDefSymmLinearSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PosDefSymmLinearSystem.cpp; sourceTree = "<group>"; };
+		0DCEB4BB1A95839800E6F4BF /* PosDefSymmLinearSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PosDefSymmLinearSystem.h; sourceTree = "<group>"; };
 		C5B487531A8F2254006A9F60 /* Exception.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Exception.hpp; sourceTree = "<group>"; };
 		C5B487541A8F22AA006A9F60 /* Exception.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Exception.cpp; sourceTree = "<group>"; };
 		C5F0B2B41A7C6CD70085FECE /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
@@ -76,6 +80,9 @@
 				C5F0B2BB1A7C6CE40085FECE /* LinearSystem.hpp */,
 				C5B487541A8F22AA006A9F60 /* Exception.cpp */,
 				C5B487531A8F2254006A9F60 /* Exception.hpp */,
+				0DCEB4B91A9582B500E6F4BF /* PosDefSymmLinearSystem.hpp */,
+				0DCEB4BA1A95839800E6F4BF /* PosDefSymmLinearSystem.cpp */,
+				0DCEB4BB1A95839800E6F4BF /* PosDefSymmLinearSystem.h */,
 				C5F0B2B61A7C6CD70085FECE /* Vector.cpp */,
 				C5F0B2B71A7C6CD70085FECE /* Vector.hpp */,
 			);
@@ -142,6 +149,7 @@
 				C5F0B2BC1A7C6CE40085FECE /* LinearSystem.cpp in Sources */,
 				C5F0B2B91A7C6CD70085FECE /* Vector.cpp in Sources */,
 				C5B487561A8F22AA006A9F60 /* Exception.cpp in Sources */,
+				0DCEB4BC1A95839800E6F4BF /* PosDefSymmLinearSystem.cpp in Sources */,
 				0D155E3E1A7A11220084BFD2 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

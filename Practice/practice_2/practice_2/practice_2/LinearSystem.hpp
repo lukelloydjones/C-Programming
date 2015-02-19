@@ -19,6 +19,12 @@ public:
    // destructor frees memory allocated
    ~LinearSystem();
 
+   // Functions to get private elemetns
+   
+    int GetSize() const;
+    Matrix GetInputMatrix() const;
+    Vector GetInputVector() const;
+    
    // Method for solving system
    virtual Vector Solve();
     

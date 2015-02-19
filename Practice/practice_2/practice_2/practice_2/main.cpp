@@ -63,12 +63,12 @@ int main(int argc, char** argv)
     
 //    std::cout << b[1] << "\n";
 //    std::cout << b.Read(0, b) << "\n";
-    //b(2) = 2.5;
+//    b(2) = 2.5;
 //    std::cout << b.Read(1, b) << "\n";
     
-    //std::cout << b << "\n";
-    // std::cout.flush();
-    //std::cout << y << "\n";
+//    std::cout << b << "\n";
+//    std::cout.flush();
+//    std::cout << y << "\n";
 //    try {
 //        y=b;
 //    } catch (Exception& error) {

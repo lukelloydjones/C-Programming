@@ -191,6 +191,33 @@ Vector operator * (double a, Vector& v) {
     return v * a;
 }
 
+// Method to matrix element wise multiplication
+
+Vector operator * (const Vector& v1, const Vector& v2)
+{
+    
+    assert(v1.mSize == v2.mSize);
+    Vector v(v1.mSize);
+    
+    for (int i = 0; i < v1.mSize; i++)
+    {
+        v[i] = v1.mData[i] * v2.mData[i];
+    }
+    
+    return v;
+}
+
+double SumVector(const Vector& v) 
+{
+    double sum = 0;
+    
+    for (int i = 0; i < v.mSize; i++)
+    {
+        sum += v.mData[i] ;
+    }
+    
+    return sum;
+}
 
 // Method to calculate norm (with default value p=2)
 // corresponding to the Euclidean norm

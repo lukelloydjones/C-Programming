@@ -29,9 +29,12 @@ public:
     Vector operator - () const;        // Overlaod - unary operator
     Vector operator + (const Vector& v1) const;        // Overlaod + binary operator
     Vector operator - (const Vector& v1) const;        // Overlaod - binary operator
-    Vector operator*(double a) const; // Scalar multiplation RHS
+    Vector operator * (double a) const; // Scalar multiplation RHS
+    friend Vector operator * (const Vector& v1,
+                            const Vector& v2); // Element wise multiplication
     friend Vector operator * (double a, Vector& v1); // Scalar multipli LHS
     double CalculateNorm(int p=2) const; // p-2-norm method
+    friend double SumVector(const Vector& v) const; // p-2-norm method
     friend int length(const Vector& v); // Length friend funtion
     friend std::ostream& operator<<(std::ostream& output, const Vector& v1);
 };
@@ -40,5 +43,6 @@ public:
 
 int length(const Vector& v);
 Vector operator * (double a, Vector& v1);
+Vector operator * (const Vector& v1, const Vector& v2);
 std::ostream& operator<<(std::ostream& output, const Vector& v1);
 #endif

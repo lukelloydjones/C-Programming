@@ -30,7 +30,7 @@ public:
     friend Vector operator*(const Vector& v,
                             const Matrix& m);
     friend Matrix operator*(const Matrix& X,
-                            const Matrix& Y);
+                            const Matrix& Y); // Element wise multiplication
 };
 // prototype signatures for friend operators
 Vector operator*(const Matrix& m, const Vector& v);
