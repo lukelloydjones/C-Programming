@@ -34,7 +34,7 @@ public:
                             const Vector& v2); // Element wise multiplication
     friend Vector operator * (double a, Vector& v1); // Scalar multipli LHS
     double CalculateNorm(int p=2) const; // p-2-norm method
-    friend double SumVector(const Vector& v) const; // p-2-norm method
+    friend double SumVector(const Vector& v) ; //sum a vector method
     friend int length(const Vector& v); // Length friend funtion
     friend std::ostream& operator<<(std::ostream& output, const Vector& v1);
 };
@@ -45,4 +45,6 @@ int length(const Vector& v);
 Vector operator * (double a, Vector& v1);
 Vector operator * (const Vector& v1, const Vector& v2);
 std::ostream& operator<<(std::ostream& output, const Vector& v1);
+double SumVector(const Vector& v) ;
+
 #endif

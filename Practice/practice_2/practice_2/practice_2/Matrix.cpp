@@ -273,8 +273,20 @@ double Matrix::CalculateDeterminant() const
     return determinant;
 }
 
+// Calculate the norm of a column vector
 
-
+double Matrix::CalculateNorm(int p) const
+{
+    
+    double norm_val, sum = 0.0;
+    for (int i = 0; i < mNumRows; i++)
+    {
+        sum += pow(fabs(mData[i][1]), p);
+    }
+    
+    norm_val = pow(sum, 1.0 / ((double)(p)));
+    return norm_val;
+}
 
 // Matrix multiplication of two matrices
 
@@ -282,25 +294,84 @@ Matrix Multiply(const Matrix& X, const Matrix& Y)
 {
     // Check the dimensions and create a new matrix
     
-    assert(X.GetNumberOfRows() == Y.GetNumberOfRows());
-    assert(X.GetNumberOfColumns() == Y.GetNumberOfColumns());
-    Matrix new_matrix(X.GetNumberOfRows(), X.GetNumberOfColumns());
+    assert(X.GetNumberOfColumns() == Y.GetNumberOfRows());
+    Matrix new_matrix(X.GetNumberOfRows(), Y.GetNumberOfColumns());
     
     //Calculate the elements of Matrix as the sum of the product of the elements in A and B
     
-    for (int i = 0; i < X.GetNumberOfColumns(); i++)
+    for (int i = 0; i < X.GetNumberOfRows(); i++)
     {
-        for (int j = 0; j < Y.GetNumberOfRows(); j++)
+        for (int j = 0; j <  Y.GetNumberOfColumns(); j++)
         {
             double temp = 0;
-            for (int k = 0; k < X.GetNumberOfColumns(); k++)
+            for (int k = 0; k < Y.GetNumberOfRows(); k++)
             {
-                temp += X.mData[i][j] * Y.mData[i][j];
+                temp += X.mData[i][k] * Y.mData[k][j];
+
             }
             new_matrix(i + 1, j + 1) = temp;
-            // std::cout << Matrix[i][j] << "\n";
+            
         }
     }
 
     return new_matrix;
 }
+
+// Method to take the transpose of a matrix
+
+Matrix Transpose(const Matrix& X)
+{
+    Matrix new_matrix(X.GetNumberOfColumns(), X.GetNumberOfRows());
+    
+    for (int i = 0; i < X.GetNumberOfRows(); i++)
+    {
+        for (int j = 0; j < X.GetNumberOfColumns(); j++)
+        {
+            new_matrix.mData[j][i] = X.mData[i][j];
+        }
+    }
+    
+    return new_matrix;
+}
+
+    
+// Method to overload the insertion operator to print a matrix
+
+std::ostream& operator<<(std::ostream& output, const Matrix& X)
+{
+    //output << X.GetNumberOfRows() << ' ' << X.GetNumberOfColumns() << '\n';
+    for (int i = 0; i < X.GetNumberOfRows(); ++i)
+    {
+        for (int j = 0; j < X.GetNumberOfColumns(); ++j)
+        {
+          output << X.mData[i][j] << "  ";
+            
+        }
+      output << std::endl;
+    }
+    return output;
+}
+
+
+// Element wise devision
+
+Matrix operator/(const Matrix& X, const Matrix& Y)
+{
+    assert(X.GetNumberOfRows() == Y.GetNumberOfRows());
+    assert(X.GetNumberOfColumns() == Y.GetNumberOfColumns());
+    Matrix new_matrix(X.GetNumberOfRows(), X.GetNumberOfColumns());
+        
+    for (int i=0; i < X.GetNumberOfRows(); i++)
+    {
+        for (int j=0; j <  X.GetNumberOfColumns(); j++)
+        {
+            new_matrix(i + 1, j + 1) = X.mData[i][j] / Y.mData[i][j];
+        }
+    }
+        
+  return new_matrix;
+
+}
+
+
+

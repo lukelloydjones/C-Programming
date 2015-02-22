@@ -10,10 +10,27 @@
 #include <cmath>
 #include <cassert>
 
+
+//// Copy matrix and vector so that original matrix and vector
+//// specified are unchanged by Gaussian elimination
+//PosDefSymmLinearSystem::PosDefSymmLinearSystem(const Matrix& A, const Matrix& b) : LinearSystem(A, b)
+//{
+//    // check matrix and vector are of compatible sizes
+//    int local_size = A.GetNumberOfRows();
+//    assert(A.GetNumberOfColumns() == local_size);
+//    assert(b.GetNumberOfRows() == local_size);
+//    
+//    // set variables for linear system
+//    mSize = local_size;
+//    mpA = new Matrix(A);
+//    mpb = new Matrix(b);
+//}
+
+
 // Solve using Gradient Descent
 
 
-Vector PosDefSymmLinearSystem::Solve()
+Matrix PosDefSymmLinearSystem::Solve()
 {
     // Get the private element size
     
@@ -21,15 +38,15 @@ Vector PosDefSymmLinearSystem::Solve()
     
     // Define the initial guess
     
-    Vector x0(Size);
+    Matrix x0(Size, 1);
     double eps = 10e-6;
     
     // Introduce a reference to make it readable
     
     Matrix rA = GetInputMatrix();
-    Vector rb = GetInputVector();
+    Matrix rb = GetInputVector();
     
-    // Test for symmetry
+    // Test for symmetry A=A^T
     
     for (int i = 0; i < Size; i++ )
     {
@@ -41,58 +58,32 @@ Vector PosDefSymmLinearSystem::Solve()
     
     // Initialise difference
     
-    Vector r(Size);
-    Vector r_old(Size);
+    Matrix r(Size, 1);
+    Matrix r_old(Size, 1);
     r = rb - rA * x0;
     r_old = rb - rA * x0;
     
-    // Initialise p and beta
+    // Initialise p, beta, lpha
     
-    Vector p(Size);
-    double beta = 0;
-    
+    Matrix p(Size, 1);
+    Matrix beta(1, 1);
+    Matrix alpha(1, 1);
+    Matrix x_new(Size, 1);
     
     // Begin the while loop
     
     while (r.CalculateNorm(2) >= eps)
     {
         
-        beta = SumVector(r*r);
-        
+        beta  = Multiply(Transpose(r), r) / Multiply(Transpose(r_old), r_old);
+        p = r + beta * p ;
+        alpha = Multiply(Transpose(r), r) / (Multiply(Multiply(Transpose(p), rA), p));
+        x_new = x0 + alpha*p;
+        r_old = r;
+        r = rb - rA*x_new;
+        x0 = x_new;
     }
     
-    
-    // forward sweep of Gaussian elimination
-    for (int k=0; k<Size-1; k++)
-    {
-        // see if pivoting is necessary
-        double max = 0.0;
-        int row = -1;
-        for (int i=k; i<Size; i++)
-        {
-            if (fabs(rA(i+1,k+1)) > max)
-            {
-                row = i;
-                max=fabs(rA(i+1,k+1)); //NB bug in published version
-            }
-        }
-        assert(row >= 0); //NB bug in published version
         
-        // pivot if necessary
-        if (row != k)
-        {
-            // swap matrix rows k+1 with row+1
-            for (int i=0; i<Size; i++)
-            {
-                double temp = rA(k+1,i+1);
-                rA(k+1,i+1) = rA(row+1,i+1);
-                rA(row+1,i+1) = temp;
-            }
-            // swap vector entries k+1 with row+1
-            double temp = rb(k+1);
-            rb(k+1) = rb(row+1);
-            rb(row+1) = temp;
-        }
-        
-    return solution;
+    return x_new;
 }

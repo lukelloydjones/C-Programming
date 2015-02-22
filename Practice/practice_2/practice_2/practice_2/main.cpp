@@ -11,7 +11,7 @@
 #include "Matrix.hpp"
 #include "Exception.hpp"
 #include "LinearSystem.hpp"
-
+#include "PosDefSymmLinearSystem.hpp"
 
 
 
@@ -38,29 +38,42 @@ int main(int argc, char** argv)
 
     //Matrix X(2, 2);
     Vector b(2);
-    Vector y(3);
-    Matrix X(2,2);
+    //Vector y(3);
+    Matrix X(1,1);
+    Matrix y(6,1);
     //Matrix Z(4,4);
     
     // Define the X matrix
     
-    X(1, 1) = 1; X(1, 2) = 2; X(2, 1) = 3; X(2, 2) = 4;
+    X(1, 1) = 1; //X(1, 2) = 2; X(2, 1) = 3; X(2, 2) = 4;
     
-    // Print an element of the X matrix
+    y(1, 1) = 1; y(2, 1) = 5; y(3, 1) = 1.9; y(4, 1) = 5.2; y(5, 1) = 1; y(6, 1) = 5.2;
+    //std::cout << X << "\n";
+    // std::cout << Transpose(X) << "\n";
+    //td::cout << y << "\n";
+    //std::cout << Transpose(y) << "\n";
+    Matrix ans =  Multiply(Transpose(y), y);
+    //std::cout << ans.GetNumberOfRows() << "\t" << ans.GetNumberOfColumns() << "\n";
+    std::cout << ans << "\n";
+//    // Print an element of the X matrix
+//    
+//    //std::cout << X(1, 1) << "\n";
+//    
+//    // Define the b vector
+//    
+//    b(1) = 0.5; b(2) = 3.5;
+//    
+//    // Define a linear system
+//    
+//    LinearSystem Xb(X, b);
+//    
+//    Xb.Solve();
+//    std::cout << Xb.Solve() << "\n";
     
-    //std::cout << X(1, 1) << "\n";
+    // Define a positive semi definite linear system
     
-    // Define the b vector
-    
-    b(1) = 0.5; b(2) = 3.5;
-    
-    // Define a linear system
-    
-    LinearSystem Xb(X, b);
-    
-    Xb.Solve();
-    std::cout << Xb.Solve() << "\n";
-    
+//    PosDefSymmLinearSystem Xb(X, b);
+//    
 //    std::cout << b[1] << "\n";
 //    std::cout << b.Read(0, b) << "\n";
 //    b(2) = 2.5;

@@ -10,11 +10,23 @@
 #define PosDefSymmLinearSystemDef
 
 #include "LinearSystem.hpp"
-
+#include <cassert>
 class PosDefSymmLinearSystem: public LinearSystem
 {
 public:
-    Vector Solve();
+    PosDefSymmLinearSystem(const Matrix& A, const Matrix& b) : LinearSystem(A, b){
+        // check matrix and vector are of compatible sizes
+        int local_size = A.GetNumberOfRows();
+        assert(A.GetNumberOfColumns() == local_size);
+        assert(b.GetNumberOfRows() == local_size);
+        
+        // set variables for linear system
+        mSize = local_size;
+        mpA = new Matrix(A);
+        mpb = new Matrix(b);
+    };
+    
+    Matrix Solve();
 };
 
 #endif

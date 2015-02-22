@@ -32,7 +32,6 @@
 		0D155E3D1A7A11220084BFD2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		0DCEB4B91A9582B500E6F4BF /* PosDefSymmLinearSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PosDefSymmLinearSystem.hpp; sourceTree = "<group>"; };
 		0DCEB4BA1A95839800E6F4BF /* PosDefSymmLinearSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PosDefSymmLinearSystem.cpp; sourceTree = "<group>"; };
-		0DCEB4BB1A95839800E6F4BF /* PosDefSymmLinearSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PosDefSymmLinearSystem.h; sourceTree = "<group>"; };
 		C5B487531A8F2254006A9F60 /* Exception.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Exception.hpp; sourceTree = "<group>"; };
 		C5B487541A8F22AA006A9F60 /* Exception.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Exception.cpp; sourceTree = "<group>"; };
 		C5F0B2B41A7C6CD70085FECE /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
@@ -82,7 +81,6 @@
 				C5B487531A8F2254006A9F60 /* Exception.hpp */,
 				0DCEB4B91A9582B500E6F4BF /* PosDefSymmLinearSystem.hpp */,
 				0DCEB4BA1A95839800E6F4BF /* PosDefSymmLinearSystem.cpp */,
-				0DCEB4BB1A95839800E6F4BF /* PosDefSymmLinearSystem.h */,
 				C5F0B2B61A7C6CD70085FECE /* Vector.cpp */,
 				C5F0B2B71A7C6CD70085FECE /* Vector.hpp */,
 			);
