@@ -37,15 +37,15 @@ int main(int argc, char** argv)
     // Declare some instance of the vector class
 
     //Matrix X(2, 2);
-    Vector b(2);
+    Matrix b(2, 1);
     //Vector y(3);
-    Matrix X(1,1);
+    Matrix X(2,2);
     Matrix y(6,1);
     //Matrix Z(4,4);
     
     // Define the X matrix
     
-    X(1, 1) = 1; //X(1, 2) = 2; X(2, 1) = 3; X(2, 2) = 4;
+    X(1, 1) = 1; X(1, 2) = 2; X(2, 1) = 2; X(2, 2) = 1;
     
     y(1, 1) = 1; y(2, 1) = 5; y(3, 1) = 1.9; y(4, 1) = 5.2; y(5, 1) = 1; y(6, 1) = 5.2;
     //std::cout << X << "\n";
@@ -72,7 +72,9 @@ int main(int argc, char** argv)
     
     // Define a positive semi definite linear system
     
-//    PosDefSymmLinearSystem Xb(X, b);
+    PosDefSymmLinearSystem Xb(X, b);
+    
+    Xb.Solve();
 //    
 //    std::cout << b[1] << "\n";
 //    std::cout << b.Read(0, b) << "\n";

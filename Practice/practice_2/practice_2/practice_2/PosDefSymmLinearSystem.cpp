@@ -11,22 +11,6 @@
 #include <cassert>
 
 
-//// Copy matrix and vector so that original matrix and vector
-//// specified are unchanged by Gaussian elimination
-//PosDefSymmLinearSystem::PosDefSymmLinearSystem(const Matrix& A, const Matrix& b) : LinearSystem(A, b)
-//{
-//    // check matrix and vector are of compatible sizes
-//    int local_size = A.GetNumberOfRows();
-//    assert(A.GetNumberOfColumns() == local_size);
-//    assert(b.GetNumberOfRows() == local_size);
-//    
-//    // set variables for linear system
-//    mSize = local_size;
-//    mpA = new Matrix(A);
-//    mpb = new Matrix(b);
-//}
-
-
 // Solve using Gradient Descent
 
 
@@ -36,25 +20,34 @@ Matrix PosDefSymmLinearSystem::Solve()
     
     int Size = GetSize();
     
+    std::cout << "Get size done" << "\n";
+    
     // Define the initial guess
     
     Matrix x0(Size, 1);
     double eps = 10e-6;
+    
+    std::cout << "Initial guess done" << "\n";
     
     // Introduce a reference to make it readable
     
     Matrix rA = GetInputMatrix();
     Matrix rb = GetInputVector();
     
+    std::cout << "Get input matrix and vector done" << "\n";
+    
     // Test for symmetry A=A^T
     
-    for (int i = 0; i < Size; i++ )
+    Matrix t_rA = Transpose(rA);
+    for (int i = 1; i <= Size; i++ )
     {
-        for(int j = 0; i < Size; j++)
+        for(int j = 1; i <= Size; j++)
         {
-            assert(rA(i, j) == rA(j, i));
+            assert(rA(i, j) == t_rA(j, i));
         }
     }
+    
+    std::cout << "Check symmetry done" << "\n";
     
     // Initialise difference
     

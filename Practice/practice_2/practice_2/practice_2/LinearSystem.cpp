@@ -9,7 +9,7 @@
 LinearSystem::LinearSystem(const Matrix& A, const Matrix& b)
 {
    // check matrix and vector are of compatible sizes
-   int local_size = A.GetNumberOfRows();
+   int local_size = A.GetNumberOfColumns();
    assert(A.GetNumberOfColumns() == local_size);
    assert(b.GetNumberOfRows() == local_size);
 
