@@ -61,20 +61,21 @@ int main(int argc, char** argv)
 //    
 //    // Define the b vector
 //    
-//    b(1) = 0.5; b(2) = 3.5;
-//    
+      b(1, 1) = 0.5; b(2, 1) = 3.5;
+      std::cout << "Norm of b is " << b.CalculateNorm(2) << "\n";
+      std::cout << " b is " << b << "\n";
 //    // Define a linear system
 //    
 //    LinearSystem Xb(X, b);
 //    
-//    Xb.Solve();
-//    std::cout << Xb.Solve() << "\n";
+//      Xb.Solve();
+//      std::cout << Xb.Solve() << "\n";
     
     // Define a positive semi definite linear system
     
     PosDefSymmLinearSystem Xb(X, b);
     
-    Xb.Solve();
+    std::cout <<  Xb.Solve() << "\n";
 //    
 //    std::cout << b[1] << "\n";
 //    std::cout << b.Read(0, b) << "\n";

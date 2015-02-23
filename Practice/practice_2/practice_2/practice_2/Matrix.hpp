@@ -35,7 +35,7 @@ public:
     friend Matrix operator/(const Matrix& X,
                             const Matrix& Y); // Element wise devision
     friend std::ostream& operator<<(std::ostream& output, const Matrix& X);
-    double CalculateNorm(int p = 2) const; // p-2-norm method
+    double CalculateNorm(int p = 2); // p-2-norm method
     
 };
 // prototype signatures for friend operators
@@ -46,5 +46,6 @@ Matrix operator/(const Matrix& X, const Matrix& Y); // Element wise devision
 Matrix Multiply(const Matrix& X, const Matrix& Y);
 Matrix Transpose(const Matrix& X);
 std::ostream& operator<<(std::ostream& output, const Matrix& X);
+
 
 #endif

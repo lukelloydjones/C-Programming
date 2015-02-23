@@ -219,20 +219,39 @@ Vector operator*(const Vector& v, const Matrix& m)
 //// Overloading element wise matrix multiplication
 Matrix operator*(const Matrix& X, const Matrix& Y)
 {
-    assert(X.GetNumberOfRows() == Y.GetNumberOfRows());
-    assert(X.GetNumberOfColumns() == Y.GetNumberOfColumns());
-    Matrix new_matrix(X.GetNumberOfRows(), X.GetNumberOfColumns());
+    Matrix new_matrix(Y.GetNumberOfRows(), Y.GetNumberOfColumns());
+
+    // If statement for scalar wise matrix multiplication i.e.,
+    // multiplcation by a 1x1 matrix
     
-    for (int i=0; i < X.GetNumberOfRows(); i++)
+    if (X.GetNumberOfRows() == 1 & X.GetNumberOfColumns() == 1)
     {
-        for (int j=0; j <  X.GetNumberOfColumns(); j++)
+        for (int i=0; i < Y.GetNumberOfRows(); i++)
         {
-            new_matrix(i + 1, j + 1) = X.mData[i][j] * Y.mData[i][j];
+            for (int j=0; j <  Y.GetNumberOfColumns(); j++)
+            {
+              new_matrix(i + 1, j + 1) = X.mData[0][0] * Y.mData[i][j];
+            }
         }
     }
+    else
+    {
+        // If not scalar
+      assert(X.GetNumberOfRows() == Y.GetNumberOfRows());
+      assert(X.GetNumberOfColumns() == Y.GetNumberOfColumns());
     
+      for (int i=0; i < X.GetNumberOfRows(); i++)
+      {
+        for (int j=0; j <  X.GetNumberOfColumns(); j++)
+        {
+          new_matrix(i + 1, j + 1) = X.mData[i][j] * Y.mData[i][j];
+        }
+      }
+    }
     return new_matrix;
 }
+
+
 
 
 // Calculate determinant of square matrix recursively
@@ -275,13 +294,13 @@ double Matrix::CalculateDeterminant() const
 
 // Calculate the norm of a column vector
 
-double Matrix::CalculateNorm(int p) const
+double Matrix::CalculateNorm(int p)
 {
     
     double norm_val, sum = 0.0;
     for (int i = 0; i < mNumRows; i++)
     {
-        sum += pow(fabs(mData[i][1]), p);
+        sum += pow(fabs(mData[i][0]), p);
     }
     
     norm_val = pow(sum, 1.0 / ((double)(p)));

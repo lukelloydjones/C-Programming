@@ -41,9 +41,9 @@ Matrix PosDefSymmLinearSystem::Solve()
     Matrix t_rA = Transpose(rA);
     for (int i = 1; i <= Size; i++ )
     {
-        for(int j = 1; i <= Size; j++)
+        for(int j = 1; j <= Size; j++)
         {
-            assert(rA(i, j) == t_rA(j, i));
+            assert(rA(i, j) == t_rA(i, j));
         }
     }
     
@@ -53,30 +53,41 @@ Matrix PosDefSymmLinearSystem::Solve()
     
     Matrix r(Size, 1);
     Matrix r_old(Size, 1);
-    r = rb - rA * x0;
-    r_old = rb - rA * x0;
+    r = rb - Multiply(rA, x0);
+    r_old = rb - Multiply(rA, x0);
     
-    // Initialise p, beta, lpha
+    std::cout << "Initialise difference done" << "\n";
+    
+    // Initialise p, beta, alpha
     
     Matrix p(Size, 1);
     Matrix beta(1, 1);
     Matrix alpha(1, 1);
     Matrix x_new(Size, 1);
     
+    std::cout << "Initialise temp elements done" << "\n";
+    std::cout << "The initial value of r is "<< r << "\n";
+    std::cout << "Initial 2 norm of r is " << r.CalculateNorm(2) << "\n";
+    
     // Begin the while loop
     
+    int step = 0;
     while (r.CalculateNorm(2) >= eps)
     {
-        
+        step ++;
+        std::cout << "step is " << step << "\n";
         beta  = Multiply(Transpose(r), r) / Multiply(Transpose(r_old), r_old);
+        std::cout << "beta " << beta << "\n";
         p = r + beta * p ;
+        std::cout << "p "<< p << "\n";
         alpha = Multiply(Transpose(r), r) / (Multiply(Multiply(Transpose(p), rA), p));
-        x_new = x0 + alpha*p;
+        x_new = x0 + alpha * p;
         r_old = r;
-        r = rb - rA*x_new;
+        r = rb - Multiply(rA, x_new);
         x0 = x_new;
     }
     
+    std::cout << "Conjugate gradient complete" << "\n";
         
     return x_new;
 }
