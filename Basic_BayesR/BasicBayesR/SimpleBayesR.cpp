@@ -23,8 +23,6 @@
 #include <cerrno> // something to help with reading in buffers
 #include "/usr/include/armadillo"
 
-// Probably going to need armadillo
-
 
 
 // Set the namespace std
@@ -213,7 +211,7 @@ int main(int argc, char* argv[])
     
     // Define the phenotype to be the third column of the larger pheno matrix
     
-    mat Y(nrow, 1);
+    vec Y(nrow, 1);
     Y = pheno.col(2);
     cout << "pheno.col(3): " << endl << Y << endl;
     
@@ -252,9 +250,39 @@ int main(int argc, char* argv[])
     
     cout << X.col(1) << endl;
     
+    // Initialise the genetic and environmental variance
     
+    double h2 = 0.5;
+    double varg;
+    double vare;
     
+    varg = h2 * var(Y);
+    vare = (varg - (h2 * varg)) / h2;
     
+    // Prior for the Dircihlet
+    
+    mat alpha(4, 1);
+    alpha(0, 0) = 1; alpha(1, 0) = 1; alpha(2, 0) = 1; alpha(3, 0) = 1;
+    
+    // Hyperparameters for scaled inverse chi-squared
+    
+    double v0  = -2;
+    double s02 = -2;
+    
+    // Initial vales for the proportions of SNPs in each class
+    
+    mat props(4, 1);
+    props(0, 0) = 0.1; props(1, 0) = 0.15 ; props(2, 0) = 0.25; props(3, 0) = 0.5;
+    
+    // Set up variances of normal distributions
+    
+    mat vars(4, 1);
+    vars(0, 0) = 0.01 * varg;
+    vars(1, 0) = 0.15 * varg;
+    vars(2, 0) = 0.25 * varg;
+    vars(3, 0) = 0.50 * varg;
+    
+    // Set the prior for the Dirichlet
 //
 //    // WRITING ELEMENTS OF THE PROGRAM OUT
 //    // -----------------------------------

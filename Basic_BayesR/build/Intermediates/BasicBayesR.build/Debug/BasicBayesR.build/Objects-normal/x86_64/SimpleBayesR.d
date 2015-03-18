@@ -1,6 +1,10 @@
 dependencies: \
   /Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Basic_BayesR/BasicBayesR/SimpleBayesR.cpp \
-  /usr/include/armadillo /usr/include/armadillo_bits/config.hpp \
+  /usr/include/armadillo /usr/include/unistd.h /usr/include/sys/unistd.h \
+  /usr/include/sys/_types/_posix_vdisable.h \
+  /usr/include/sys/_types/_seek_set.h /usr/include/sys/select.h \
+  /usr/include/sys/_select.h /usr/include/sys/_types/_uuid_t.h \
+  /usr/include/gethostuuid.h /usr/include/armadillo_bits/config.hpp \
   /usr/include/armadillo_bits/compiler_setup.hpp \
   /usr/include/armadillo_bits/include_atlas.hpp \
   /usr/include/armadillo_bits/include_hdf5.hpp \

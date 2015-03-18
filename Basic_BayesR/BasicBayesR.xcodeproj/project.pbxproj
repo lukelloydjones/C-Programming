@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D3E008A1A8D83DF00E06889 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D3E00891A8D83DF00E06889 /* libz.dylib */; };
 		0D6AB6D419F472930048B267 /* SimpleBayesR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D6AB6D319F472930048B267 /* SimpleBayesR.cpp */; };
 /* End PBXBuildFile section */
 
@@ -24,7 +23,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0D3E00891A8D83DF00E06889 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0D6AB6D019F472930048B267 /* BasicBayesR */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BasicBayesR; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D6AB6D319F472930048B267 /* SimpleBayesR.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleBayesR.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -34,7 +32,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D3E008A1A8D83DF00E06889 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,7 +41,6 @@
 		0D6AB6C719F472920048B267 = {
 			isa = PBXGroup;
 			children = (
-				0D3E00891A8D83DF00E06889 /* libz.dylib */,
 				0D6AB6D219F472930048B267 /* BasicBayesR */,
 				0D6AB6D119F472930048B267 /* Products */,
 			);
@@ -206,6 +202,10 @@
 		0D6AB6D819F472930048B267 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/include/;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/include/;
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "-I/usr/include";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -213,6 +213,10 @@
 		0D6AB6D919F472930048B267 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/include/;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/include/;
+				OTHER_CPLUSPLUSFLAGS = "-I/usr/include";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
