@@ -136,9 +136,7 @@ int main(int argc, char* argv[])
     read_geno_file.close(); // Flush the buffer. This is important so that we don't over fill the buffer
     std::cout.flush();
     
-    // Define the variable N and P from the genoptype matrices
-    int N = nrow;
-    int P = ncol;
+
     
     // PHENOTYPE VECTOR
     // ----------------
@@ -214,17 +212,24 @@ int main(int argc, char* argv[])
 
     // Correct geno for allele frequencies
     // (currently coded 0, 1, 2) and store in X
-    
+    int N = geno.n_rows;
+    int P = geno.n_cols;
     mat X(N, P);
-    
+    char geno_adjust = atoi(argv[3]);;
     // Build the new genotype matrix
-    double q;
-    for (int j = 0; j < P; j++)
+    if (geno_adjust == 1)
     {
+      double q;
+      for (int j = 0; j < P; j++)
+      {
         q = sum(geno.col(j)) / (2.0 * N); // BE CAREFUL FOR A VECTOR 0 INDEX
         X.col(j) = (geno.col(j) - 2.0 * q) / sqrt(2.0 * q * (1.0 - q));
+      }
+    } else
+    {
+        X = geno;
     }
-    
+
     // cout << X.col(0) << endl;
     
     // Variable definition
@@ -249,14 +254,14 @@ int main(int argc, char* argv[])
     double right_objective = 0.0;
     double right_penalty  = 0.0;
     double right_root = 0.0;
-    mat mu_col = ones(N, P);
+    mat mu_col = ones(N, 1);
     X.insert_cols(0, mu_col); // Add a column of ones to the X matrix
     // cout << X.col(0) << endl;
     mat estimate(P, 1);
-    mat sum_x_squares(N, 1);
-    mat left_resid(P, 1);
-    colvec resid(P, 1);
-    mat right_resid(P, 1);
+    mat sum_x_squares(P, 1);
+    colvec left_resid(N, 1);
+    colvec resid(N, 1);
+    colvec right_resid(N, 1);
     mat Y(N, 1);
     Y = pheno;
     
@@ -287,10 +292,11 @@ int main(int argc, char* argv[])
     // ---------------------------------------------
     
     l2 = sum(resid % resid); // % mean element wise multiplication
-    // cout << l2 << endl;
     penalty = lambda * penalty;
     objective = l2 / 2.0 + penalty;
     
+    //cout << "Initial objective " <<  objective << endl;
+    //cout << "Initial penalty "   <<  penalty << endl;
     
     // Start the main computation loop
     // -------------------------------
@@ -302,75 +308,118 @@ int main(int argc, char* argv[])
         
         a = estimate(0, 0);
         estimate(0, 0) = a + sum(resid) / N;
-        resid = resid + a - estimate(0, 0);  // Check addition of scalar to vector
-        
+        resid = (a - estimate(0, 0)) + resid;  // Check addition of scalar to vector
+    
+        //cout << "a line 309 " <<  a << endl;
+        //cout << "intercept "   <<  estimate(0, 0) << endl;
+        //cout << "resid line 311 "   <<  resid << endl;
+
         // Update the other regression coefficients
         // ----------------------------------------
         
         for (int i = 1; i < P; i++)
         {
-          dl2 = -sum(resid % X.col(i));
-          cout << dl2 << endl;
-          a = estimate(i, 0);
-          b = abs(a);
-          if (b < epsilon)
-          {
-            if (dl2 + lambda >= 0.0 && -dl2 + lambda >= 0.0)
+            dl2 = -sum(resid % X.col(i));
+            a = estimate(i, 0);
+            b = abs(a);
+            //cout << dl2 << endl;
+            //cout << -dl2 << endl;
+             //cout << a << endl;
+             //cout << b << endl;
+            if (b < epsilon)
             {
-              continue;
+              if (dl2 + lambda >= 0.0 && -dl2 + lambda >= 0.0)
+              {
+                continue;
+              }
             }
-          }
           // Find the root to the right of 0
           // -------------------------------
           if (sum_x_squares(i, 0) <= 0.0) 
           { 
             sum_x_squares(i, 0) = sum(X.col(i) % X.col(i));
           }
+          // cout << "sum_x_sqr_i" << sum_x_squares(i, 0) << endl;
           right_root = max(a - (dl2 + lambda) / sum_x_squares(i, 0), 0.0);
+          // cout << "right_root " << right_root << endl;
           right_l2   = 0.0;
           c          = a - right_root;
           // Update the residuals to the right
-          for (int j = 0; j < P; j++)
+          for (int j = 0; j < N; j++)
           {
-            right_resid(j, 0) = resid(j, 0) + c * X(j, i);
-            right_l2          = right_l2 + resid(j, 0) * resid(j, 0);
+            right_resid(j) = resid(j) + c * X(j, i);
+            // cout << j << resid(j) + c * X(j, i) << endl;
+            right_l2       = right_l2 + right_resid(j)  * right_resid(j);
           }
           right_penalty   = penalty + lambda * (right_root - b);
-          right_objective = right_l2 / 2 + right_penalty;
+          //cout << "right penalty " << right_penalty << endl;
+          //cout << "right l2 " << right_l2 << endl;
+          right_objective = right_l2 / 2.0 + right_penalty;
+          //cout << "Right pen " << right_penalty << endl;
+          //c/out << "Right obj " << right_objective << endl;
+          //cout << "Right residual " << right_resid << endl;
           // Find the root to the left of 0
           // ------------------------------
           left_root = min(a - (dl2 - lambda) / sum_x_squares(i, 0), 0.0);
           left_l2   = 0.0;
           c         = a - left_root;
           // Update the residuals to the left
-          for (int j = 0; j < P; j++)
+          for (int j = 0; j < N; j++)
           {
-            left_resid(j, 0) = resid(j, 0) + c * X(j, i);
-            left_l2          = left_l2 + resid(j, 0) * resid(j, 0);
+            left_resid(j) = resid(j) + c * X(j, i);
+            left_l2       = left_l2 + left_resid(j) * left_resid(j);
           }
           left_penalty   = penalty + lambda * (abs(left_root) - b);
-          left_objective = left_l2 / 2 + left_penalty;
-          # Choose between the two roots
-  	      # ----------------------------
+          left_objective = left_l2 / 2.0 + left_penalty;
+          //cout << "Left pen " << left_penalty << endl;
+          //cout << "Left obj " << left_objective << endl;
+          // Choose between the two roots
+          // ----------------------------
+          if (right_objective <= left_objective)
+          {
+              resid          = right_resid;
+              estimate(i, 0) = right_root;
+              l2             = right_l2;
+              penalty        = right_penalty;
+          } else
+          {
+              resid          = left_resid;
+              estimate(i, 0) = left_root;
+              l2             = left_l2;
+              penalty        = left_penalty;
+          }
+         // cout << resid << endl;
+         //cout << estimate(i, 0) << endl;
+         //cout << l2 << endl;
+         //cout << penalty << endl;
+         }
+
+
+        // Update objective function
+        //cout << objective << endl;
+        new_objective = l2 / 2.0 + penalty;
+        //cout << new_objective << endl;
+        // Check for descent failure or convergence. If neither occurs,
+        // record the new value of the objective function
+        cout << "Objective difference " << objective - new_objective << endl;
+        if (new_objective > objective)
+        {
+            cout << "*** ERROR *** OBJECTIVE FUNCTION INCREASE" << endl;
+            exit(1);
         }
-  
+        if (objective - new_objective < criterion)
+        {
+            cout << new_objective << endl;
+            cout << estimate << endl;
+            cout << "We have convergence" << endl;
+            exit(0);
+        } else
+        {
+            objective = new_objective;
+            cout << new_objective << endl;
+        }
+
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 //
 //    // WRITING ELEMENTS OF THE PROGRAM OUT
@@ -414,7 +463,7 @@ int main(int argc, char* argv[])
 //    
 ////    write_output.close();
     
-
+            return 0;
     
 }
 
