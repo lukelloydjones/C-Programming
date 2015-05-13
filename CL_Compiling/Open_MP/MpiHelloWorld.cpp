@@ -33,28 +33,28 @@
 // Main
 // ------------------------------------------------------------------------------------------
 
-int main(int argc, char* argv[])
-{
-    // Testing MPI
-    
-    MPI::Init(argc, argv); // Start the parallel process
-    int num_procs = MPI::COMM_WORLD.Get_size(); // Number of processes
-    int rank = MPI::COMM_WORLD.Get_rank(); // Identifies the process executing
-    // a given statement
-    std::cout << "Hello world from process " << rank
-    << " of " << num_procs << "\n";
-    MPI::Finalize();  // Stop the parallel process
-    
-    // Testing boost
-    
-//    using namespace boost::lambda;
-//    typedef std::istream_iterator<int> in;
+//int main(int argc, char* argv[])
+//{
+//    // Testing MPI
 //    
-//    std::for_each(
-//                  in(std::cin), in(), std::cout << (_1 * 3) << " " );
-    
-    return 0;
-}
+//    MPI::Init(argc, argv); // Start the parallel process
+//    int num_procs = MPI::COMM_WORLD.Get_size(); // Number of processes
+//    int rank = MPI::COMM_WORLD.Get_rank(); // Identifies the process executing
+//    // a given statement
+//    std::cout << "Hello world from process " << rank
+//    << " of " << num_procs << "\n";
+//    MPI::Finalize();  // Stop the parallel process
+//    
+//    // Testing boost
+//    
+////    using namespace boost::lambda;
+////    typedef std::istream_iterator<int> in;
+////    
+////    std::for_each(
+////                  in(std::cin), in(), std::cout << (_1 * 3) << " " );
+//    
+//    return 0;
+//}
 
 // All the calls to MPI in the program above used calls to specific C++ bindings in the
 // MPI library. 'Finalise' if a fucntion in the MPI namespaceand Get_size is a method of
@@ -115,8 +115,8 @@ int main(int argc, char* argv[])
 // processes, where one process sends while another process receives. The two functions are
 // denoted Send and Recv. Their function prototypes are:
 
-void::Send(const void* buf, int count, const Datatype& datatype, int dest, int tag) const
-void::Recv(void* buf, int count, const Datatype& datatype, int source, int tag) const
+//void::Send(const void* buf, int count, const Datatype& datatype, int dest, int tag) const
+//void::Recv(void* buf, int count, const Datatype& datatype, int source, int tag) const
 
 // The Send method takes data on the current process from the location given by the pointer
 // buf. These data are assumed to be in contiguous memory (share a common border) as an
@@ -138,6 +138,160 @@ void::Recv(void* buf, int count, const Datatype& datatype, int source, int tag) 
 // process is ready for them. The wild card MPI::ANY_TAG is useful if we know which process
 // is sending the data, but do not know what the tag will be.
 
+// The corresponding MPI datatype signatures for the types introduced in chapter 1 are
+// MPI::BOOL, MPI::CHAR, MPI::INT, and MPI::DOUBLE. There is no MPI type for strings because
+// std::string is a C++ class rather than a plain data-type. You can send entire classes in
+// MPI message by using advanced programming features to introduce user-defined data-types
+// but this is not recommended. Classes can be transferred by packing the raw data into a
+// message at one end and unpacking it into a waiting class at the other end.
 
+// Example code for sending and receiving using the MPI libraries
+
+int main(int argc, char* argv[])
+{
+  MPI::Init(argc, argv);
+    int tag = 30;
+    if (MPI::COMM_WORLD.Get_rank() == 0)
+    {
+      // Specific send code for process 0
+      double send_buffer[2] = {100.0, 200.0};
+      MPI::COMM_WORLD.Send(send_buffer, 2, MPI::DOUBLE, 1, tag);
+    }
+    if (MPI::COMM_WORLD.Get_rank() == 1) // process rank guard
+    {
+      // Specific receive code for process 1
+      double recv_buffer[2] = {0.0, 0.0};
+      MPI::COMM_WORLD.Send(recv_buffer, 2, MPI::DOUBLE, MPI::ANY_SOURCE, MPI::ANY_TAG);
+      std::cout << recv_buffer[0] << "\n";
+      std::cout << recv_buffer[1] << "\n";
+    }
+   MPI::Finalize();
+// Point to point communication is necesarily nonsymmetric: both processes are running
+// exactly the same program with the same code, but parts of the program which are
+// intended only for one process are placed in specific blocks guarded by their process
+// rank.
+    return 0;
+}
+
+// Blocking and Buffered Sends
+// ---------------------------
+
+// Point to point messaging is the default i.e., using Send and Recv. Both functions are
+// blocking functions as they do not allow the program to continue until it us safe to do
+// so. The Send guarantees that the contents won't be changed and that any subsequent
+// changes to the buffer will not affect the message being sent. If computation is
+// allowed to proceed it means that the data is already delivered or it has been saved
+// into another buffer ready for delivery.
+
+// Send is a comprimise between waiting to be sure a message has been delivered and
+// getting on with other tasks. There are other functions that send messages but on
+// different ends of the safety to speed spectrum
+
+// The safest method is Ssend. The method guarantees not to continue until the message
+// has been sent. Akin to a telephone call
+
+// Second method is Bsend or buffered send. Allows the program to continue when safe to
+// do so. This may happed faster because the message is copied in a separate buffer.
+// This buffere must be supplied and configured by the user.
+
+// Isend is the most efficient method for sending messages. Returns control to the program
+// immediately, buffered or not yet acted on. Little like SMS. Has a handle MPI::Request
+// that has a Wait method: this methid instructs execution to wait her until the message
+// has been sent.
+
+// There are others such as Ibsend
+
+// The default Recv is alsp one of a spectrum of functions. Technically a blocking function
+// There is also a non blocking Irecv or immediate receive. The program goes on occasionally
+// checking back for new information that may be coming in.
+
+// Collective Communication
+// ------------------------
+
+// Code for P-P comms is not symmetric - one process sends while the other receives. You can
+// make with MPI specialised collective calls in which all the processes take part by
+// executing the same commands. There are many flavours. The combined receive - where every
+// process sends a message to another, while also receiving a remote message. One-to-many
+// broadcast where data from one process are send to the entire group; and many-to-one
+// ops such as reduction in which an operation is used to combine results from all processes
+// into a single result.
+
+// These collective calls have the advantage that the can be highly tuned to an MPI implemnt
+// ation to fit the local architecture. The broadcast of a single number to all p processes
+// from process 0 could be achieved by sending p-1 messages from process 0, on message to
+// each of the recipients. If process 0 sends to only two processes who each send to two
+// more then the informatio is broadcast to all recpients in log2p rounds of message
+// sending. If a supercomputer consists of several multicore computers connected by
+// Ethernet then the broadcast algorithm can be tuned to minimise the number of Ethernet
+// messages while possible increasing the number of faster messages between cores in the
+// same machine.
+
+// Collective Communication - Barrier
+// ------------------------ ---------
+
+// The simplest collective method is Barrier. It says that every process should wait
+// here until all processes are ready to proceed. Barriers are useful when you are
+// timing certain parts of the code, printing out information to the console, or
+// debugging the code
+
+std::cout << "Processes may arrive at any time \n";
+std::cout.flush();
+MPI::COMM_WORLD.Barrier();
+std::cout << "All processes continue together\n";
+std::cout.flush();
+
+// Collective Communication - Combined Send and Receive
+// ----------------------------------------------------
+
+
+// Wish to send and receive many PTP messages at the same point in a computation,
+// and where every process should be involved. E.G. solving a PDE using a finite
+// difference scheme over a grid, where the value dependes on a the neighbouring
+// grid points. Local dependence problems. We can divide the grid into a number
+// of identical vertical strips and assigning one strip to each parallel process.
+// Partition into independent sets and send each set to a process.
+// The local copy of remote neighbouring data is called halo data and the message
+// passing process is called halo exchange.
+
+// Is we are averaging of neighbourhoods. Used in moving window process. Sending
+// edge data in both directions between processes n and n-1 is known as halo
+// exchange. For the same reasons two way halo exchange is also required between
+// processes n and n+1.
+
+//For these types of problem, a more sophisticated version of point-to-point mes- sage passing is the combined send and receive, called Sendrecv. Its function pro- totype is:
+
+void Comm::Sendrecv(const void *sendbuf, int sendcount, const Datatype& sendtype,
+                    int dest, int sendtag,
+                    void *recvbuf, int recvcount,
+                    const Datatype& recvtype,
+                    int source, int recvtag) const
+
+// There are ten arguments which are divided into 2 groups 5 for send and 5 for
+// receive. Similar to PTP, interpreted relative to the local process: if each
+// process is sending to the rank above, by symmetry, then each mus be receiving from
+// the rank below. * It is possible to mix the types of messages (both in terms
+// of DataType and the length of the messages) so that, for example, odd-ranked processes are
+// send- ing integer messages to the process above, but even-ranked processes are sending
+// double precision floating point data
+
+// The following code shows all processes communicating in a ring. Each process (with rank given by the variable rank) sends a message to its right-hand neighbour (rank + 1).
+// Modular arithmetic—see Sect. 1.4.3—ensures that the left_rank and right_rank variables are set inside the range 0 ≤ rank < num_procs so that the top-most process is able to send a message to the rank 0 process
+
+int tag = 30;
+int rank = MPI::COMM_WORLD.Get_rank();
+int num_procs = MPI::COMM_WORLD.Get_size();
+// left_rank is rank-1
+// Note modular arithmetic, so that 0 has
+// neighbour num_procs-1
+int left_rank = (rank-1+num_procs)%num_procs;
+int right_rank = (rank+1)%num_procs;
+int recv_data;
+// Communicate in a ring ...->0->1->2...
+MPI::COMM_WORLD.Sendrecv(&rank, 1, MPI::INT,
+                         right_rank, tag,
+                         &recv_data, 1, MPI::INT,
+                         left_rank, tag);
+std::cout << "Process " << rank << " received from "
+<< recv_data << "\n";
 
 
