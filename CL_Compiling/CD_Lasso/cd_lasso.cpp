@@ -20,7 +20,7 @@
 #include <vector>
 #include <cerrno> // something to help with reading in buffers
 #include <armadillo>
-
+#include <time.h>
 
 
 // Set the namespace std
@@ -61,6 +61,8 @@ int main(int argc, char* argv[])
         std::cout << "\n";
     }
     
+    clock_t t1, t2, t3, t4;
+    t1 = clock();
     // READ IN THE GENOTYPE AND PHENOTYPE MATRICES
     // -------------------------------------------
     // -------------------------------------------
@@ -93,7 +95,7 @@ int main(int argc, char* argv[])
             istringstream iss(line); // Make the line into a string stream
             string result;           // Make another string to store the ind elements
             ncol = 0;
-            while(getline(iss, result, '\t')) // Get each element of the stream separated by space
+            while(getline(iss, result, ',')) // Get each element of the stream separated by space
             {
                 ncol++;                       // Increment the columns
             }
@@ -113,28 +115,28 @@ int main(int argc, char* argv[])
     read_file_size.close(); // Flush the buffer. This is important so that we don't over fill the buffer
     std::cout.flush();
     
-    mat geno(nrow, ncol);
-
+    mat X(nrow, ncol);
+    X.load(argv[1], csv_ascii);
     
-    // Read in the genotype matrix and store
-    
-    ifstream read_geno_file (argv[1]);
-    assert(read_geno_file.is_open());
-    
-    for (int i = 0; i < nrow; i++)
-    {
-        for (int j = 0; j < ncol; j++)
-        {
-            read_geno_file >> geno(i, j);
-        }
-    }
-    
-    //cout << "First column of Geno matrix " << "\n" << geno.col(1) << "\n";
-    
-    // Close and flush the read buffer
-    
-    read_geno_file.close(); // Flush the buffer. This is important so that we don't over fill the buffer
-    std::cout.flush();
+//    // Read in the genotype matrix and store
+//    
+//    ifstream read_geno_file (argv[1]);
+//    assert(read_geno_file.is_open());
+//    
+//    for (int i = 0; i < nrow; i++)
+//    {
+//        for (int j = 0; j < ncol; j++)
+//        {
+//            read_geno_file >> geno(i, j);
+//        }
+//    }
+//    
+//    //cout << "First column of Geno matrix " << "\n" << geno.col(1) << "\n";
+//    
+//    // Close and flush the read buffer
+//    
+//    read_geno_file.close(); // Flush the buffer. This is important so that we don't over fill the buffer
+//    std::cout.flush();
     
 
     
@@ -212,9 +214,8 @@ int main(int argc, char* argv[])
 
     // Correct geno for allele frequencies
     // (currently coded 0, 1, 2) and store in X
-    int N = geno.n_rows;
-    int P = geno.n_cols;
-    mat X(N, P);
+    int N = X.n_rows;
+    int P = X.n_cols;
     char geno_adjust = atoi(argv[3]);;
     // Build the new genotype matrix
     if (geno_adjust == 1)
@@ -222,26 +223,30 @@ int main(int argc, char* argv[])
       double q;
       for (int j = 0; j < P; j++)
       {
-        q = sum(geno.col(j)) / (2.0 * N); // BE CAREFUL FOR A VECTOR 0 INDEX
-        X.col(j) = (geno.col(j) - 2.0 * q) / sqrt(2.0 * q * (1.0 - q));
+        q = sum(X.col(j)) / (2.0 * N); // BE CAREFUL FOR A VECTOR 0 INDEX
+        X.col(j) = (X.col(j) - 2.0 * q) / sqrt(2.0 * q * (1.0 - q));
       }
     } else
     {
-        X = geno;
+        X = X;
     }
-
+    // delete geno;
     // cout << X.col(0) << endl;
+    t2 = clock();
+    float diff ((float)t2 - (float)t1);
+    float seconds = diff / CLOCKS_PER_SEC;
+    cout << "File IO time took " << seconds << " seconds" << endl;
     
     // Variable definition
     // -------------------
-    
+    t3 = clock();
     double criterion = 10e-5;
     double epsilon   = 10e-8;
     double a = 0.0;
     double b = 0.0;
     double c = 0.0;
     double dl2 = 0.0;
-    double lambda = 2.0;
+    double lambda = 20.0;
     double l2 = 0.0;
     double objective = 0.0;
     double penalty = 0.0;         // Pass as an argument
@@ -410,9 +415,28 @@ int main(int argc, char* argv[])
         if (objective - new_objective < criterion)
         {
             cout << new_objective << endl;
-            cout << estimate << endl;
+            // cout << estimate << endl;
             cout << "We have convergence" << endl;
+            // Write the estimated betas to a file
+            
+            std::ofstream write_output("/Users/uqllloyd/Desktop/cd_lasso_estimates.txt"); //Open the write stream
+            assert(write_output.is_open());  // Make sure it's open
+            
+            for (int i = 0; i < P; i++)
+            {
+                write_output << estimate(i, 0) << "\n";
+                //cout << "We are in the write loop" << endl;
+            }
+            
+            // Close the write stream
+            
+            write_output.close();
+            t4 = clock();
+            float diff ((float)t4 - (float)t3);
+            float seconds = diff / CLOCKS_PER_SEC;
+            cout << "Time to estimate lasso parameters was " << seconds << " seconds" << endl;
             exit(0);
+            
         } else
         {
             objective = new_objective;
@@ -420,50 +444,6 @@ int main(int argc, char* argv[])
         }
 
     }
-    
-//
-//    // WRITING ELEMENTS OF THE PROGRAM OUT
-//    // -----------------------------------
-//    // -----------------------------------
-//    
-//    
-//    // Print an element to the screen to check what we are reading in
-//    
-//    std::cout << "First element of the A matrix: " << A[0][0] << "\n";
-//    
-//    
-//    // Do the matrix multiplication
-//    
-//    //C= Multiply(A, A, nrow, ncol, nrow, ncol);
-//    
-//    
-//    // Write the matrix result to a file
-//    
-//    std::ofstream write_output("/Users/hayleywise/Dropbox/Post_Doc_QBI/BayesR/Bayes_R_prog_practice/geno.raw"); //Open the write stream
-//    assert(write_output.is_open());  // Make sure it's open
-//    
-//    for (int i=0; i<nrow; i++)
-//    {
-//        for (int j=0; j<ncol; j++)
-//        {
-//            if ((j+1)%ncol==0)
-//            {
-//                write_output << C[i][j] << "\n";
-//            }
-//            else
-//            {
-//                // For those not at the end of a row
-//                write_output << C[i][j] << "\t";
-//            }
-//        }
-//    }
-//    
-//    
-//    // Close the write stream
-//    
-////    write_output.close();
-    
-            return 0;
     
 }
 

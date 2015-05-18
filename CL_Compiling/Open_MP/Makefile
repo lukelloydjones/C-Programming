@@ -15,7 +15,7 @@ CC  = mpic++   # Message passing interface compiler
 
 # Boost
 
-IBOOST_PATH  = -I/usr/local/bin/boost_1_57_0
+IBOOST_PATH = -I/usr/local/bin/boost_1_57_0
 LBOOST_PATH = -L/usr/local/bin/boost_1_57_0/stage/lib
 
 # Scythestat
