@@ -39,8 +39,10 @@
 //    
 //    MPI::Init(argc, argv); // Start the parallel process
 //    int num_procs = MPI::COMM_WORLD.Get_size(); // Number of processes
-//    int rank = MPI::COMM_WORLD.Get_rank(); // Identifies the process executing
+//    // int rank = MPI::COMM_WORLD.Get_rank(); // Identifies the process executing
 //    // a given statement
+//    int world_size = 4;
+//    int rank = MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 //    std::cout << "Hello world from process " << rank
 //    << " of " << num_procs << "\n";
 //    MPI::Finalize();  // Stop the parallel process
@@ -54,6 +56,33 @@
 ////                  in(std::cin), in(), std::cout << (_1 * 3) << " " );
 //    
 //    return 0;
+//}
+
+
+//int main(int argc, char** argv) {
+//    // Initialize the MPI environment
+//    MPI_Init(NULL, NULL);
+//    
+//    // Get the number of processes
+//    int world_size;
+//    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+//    
+//    // Get the rank of the process
+//    int world_rank;
+//    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+//    
+//    // Get the name of the processor
+//    char processor_name[MPI_MAX_PROCESSOR_NAME];
+//    int name_len;
+//    MPI_Get_processor_name(processor_name, &name_len);
+//    
+//    // Print off a hello world message
+//    printf("Hello world from processor %s, rank %d"
+//           " out of %d processors\n",
+//           processor_name, world_rank, world_size);
+//    
+//    // Finalize the MPI environment.
+//    MPI_Finalize();
 //}
 
 // All the calls to MPI in the program above used calls to specific C++ bindings in the
@@ -147,31 +176,31 @@
 
 // Example code for sending and receiving using the MPI libraries
 
-int main(int argc, char* argv[])
-{
-  MPI::Init(argc, argv);
-    int tag = 30;
-    if (MPI::COMM_WORLD.Get_rank() == 0)
-    {
-      // Specific send code for process 0
-      double send_buffer[2] = {100.0, 200.0};
-      MPI::COMM_WORLD.Send(send_buffer, 2, MPI::DOUBLE, 1, tag);
-    }
-    if (MPI::COMM_WORLD.Get_rank() == 1) // process rank guard
-    {
-      // Specific receive code for process 1
-      double recv_buffer[2] = {0.0, 0.0};
-      MPI::COMM_WORLD.Send(recv_buffer, 2, MPI::DOUBLE, MPI::ANY_SOURCE, MPI::ANY_TAG);
-      std::cout << recv_buffer[0] << "\n";
-      std::cout << recv_buffer[1] << "\n";
-    }
-   MPI::Finalize();
-// Point to point communication is necesarily nonsymmetric: both processes are running
-// exactly the same program with the same code, but parts of the program which are
-// intended only for one process are placed in specific blocks guarded by their process
-// rank.
-    return 0;
-}
+//int main(int argc, char* argv[])
+//{
+//  MPI::Init(argc, argv);
+//    int tag = 30;
+//    if (MPI::COMM_WORLD.Get_rank() == 0)
+//    {
+//      // Specific send code for process 0
+//      double send_buffer[2] = {100.0, 200.0};
+//      MPI::COMM_WORLD.Send(send_buffer, 2, MPI::DOUBLE, 1, tag);
+//    }
+//    if (MPI::COMM_WORLD.Get_rank() == 1) // process rank guard
+//    {
+//      // Specific receive code for process 1
+//      double recv_buffer[2] = {0.0, 0.0};
+//      MPI::COMM_WORLD.Send(recv_buffer, 2, MPI::DOUBLE, MPI::ANY_SOURCE, MPI::ANY_TAG);
+//      std::cout << recv_buffer[0] << "\n";
+//      std::cout << recv_buffer[1] << "\n";
+//    }
+//   MPI::Finalize();
+//// Point to point communication is necesarily nonsymmetric: both processes are running
+//// exactly the same program with the same code, but parts of the program which are
+//// intended only for one process are placed in specific blocks guarded by their process
+//// rank.
+//    return 0;
+//}
 
 // Blocking and Buffered Sends
 // ---------------------------
@@ -234,11 +263,11 @@ int main(int argc, char* argv[])
 // timing certain parts of the code, printing out information to the console, or
 // debugging the code
 
-std::cout << "Processes may arrive at any time \n";
-std::cout.flush();
-MPI::COMM_WORLD.Barrier();
-std::cout << "All processes continue together\n";
-std::cout.flush();
+//std::cout << "Processes may arrive at any time \n";
+//std::cout.flush();
+//MPI::COMM_WORLD.Barrier();
+//std::cout << "All processes continue together\n";
+//std::cout.flush();
 
 // Collective Communication - Combined Send and Receive
 // ----------------------------------------------------
@@ -260,11 +289,11 @@ std::cout.flush();
 
 //For these types of problem, a more sophisticated version of point-to-point mes- sage passing is the combined send and receive, called Sendrecv. Its function pro- totype is:
 
-void Comm::Sendrecv(const void *sendbuf, int sendcount, const Datatype& sendtype,
-                    int dest, int sendtag,
-                    void *recvbuf, int recvcount,
-                    const Datatype& recvtype,
-                    int source, int recvtag) const
+//void Comm::Sendrecv(const void *sendbuf, int sendcount, const Datatype& sendtype,
+//                    int dest, int sendtag,
+//                    void *recvbuf, int recvcount,
+//                    const Datatype& recvtype,
+//                    int source, int recvtag) const
 
 // There are ten arguments which are divided into 2 groups 5 for send and 5 for
 // receive. Similar to PTP, interpreted relative to the local process: if each
@@ -276,22 +305,229 @@ void Comm::Sendrecv(const void *sendbuf, int sendcount, const Datatype& sendtype
 
 // The following code shows all processes communicating in a ring. Each process (with rank given by the variable rank) sends a message to its right-hand neighbour (rank + 1).
 // Modular arithmetic—see Sect. 1.4.3—ensures that the left_rank and right_rank variables are set inside the range 0 ≤ rank < num_procs so that the top-most process is able to send a message to the rank 0 process
+//int main(int argc, char* argv[])
+//{
+//    MPI::Init(argc, argv);
+//    int tag = 30;
+//    int rank = MPI::COMM_WORLD.Get_rank();
+//    int num_procs = MPI::COMM_WORLD.Get_size();
+//    // std::cout << "Num process " << num_procs << "\n";
+//    // left_rank is rank-1
+//    // Note modular arithmetic, so that 0 has
+//    // neighbour num_procs-1
+//    int left_rank  = (rank - 1 + num_procs) % num_procs;
+//    int right_rank = (rank + 1) % num_procs;
+//    std::cout << "Num left_rank "  << left_rank << "\n";
+//    std::cout << "Num right_rank " << right_rank << "\n";
+//    int recv_data;
+//    // Communicate in a ring ...->0->1->2...
+//    MPI::COMM_WORLD.Sendrecv(&rank, 1, MPI::INT, right_rank, tag, &recv_data, 1, MPI::INT,left_rank, tag);
+//    std::cout << "Process " << rank << " received from " << recv_data << "\n";
+//    MPI::Finalize();
+//return 0;
+//}
+// Ran this line mpirun -np 4 ./MpiHelloWorld
 
-int tag = 30;
-int rank = MPI::COMM_WORLD.Get_rank();
-int num_procs = MPI::COMM_WORLD.Get_size();
-// left_rank is rank-1
-// Note modular arithmetic, so that 0 has
-// neighbour num_procs-1
-int left_rank = (rank-1+num_procs)%num_procs;
-int right_rank = (rank+1)%num_procs;
-int recv_data;
-// Communicate in a ring ...->0->1->2...
-MPI::COMM_WORLD.Sendrecv(&rank, 1, MPI::INT,
-                         right_rank, tag,
-                         &recv_data, 1, MPI::INT,
-                         left_rank, tag);
-std::cout << "Process " << rank << " received from "
-<< recv_data << "\n";
+// MPI provides a special process name MPI::PROC_NULL which mean that this process does not participate
+// with a send and or receive. This process name is illustrated in the following code, which is
+// similar to the previous Sendrecv example except that is no closed loop: the top process does not
+// send to process 0
+//int main(int argc, char* argv[])
+//{
+//    MPI::Init(argc, argv);
+//    int tag = 30;
+//    int rank = MPI::COMM_WORLD.Get_rank();
+//    int num_procs = MPI::COMM_WORLD.Get_size();
+//    int right_rank = rank + 1;
+//    // Top-most receives nothing
+//    if (rank == num_procs - 1)
+//    {
+//        right_rank = MPI::PROC_NULL;
+//    }
+//    int left_rank = rank - 1;
+//    // Bottom-most receives nothing
+//    if (rank ==0)
+//    {
+//        left_rank = MPI::PROC_NULL;
+//    }
+//    int recv_data = 999; //This will be unchanged on proc 0
+//    // Communicate 0->1->2... Final process sends nowhere
+//    MPI::COMM_WORLD.Sendrecv(&rank, 1, MPI::INT, right_rank, tag,
+//                             &recv_data, 1, MPI::INT, left_rank, MPI::ANY_TAG);
+//    std::cout << "Process " << rank << " received from "<< recv_data << "\n";
+//    MPI::Finalize();
+//    return 0;
+//}
+//
+//
+//// Broadcast and Reduce
+//// --------------------
+//
+//// The collective operations broadcast and reduce are primarily one-to-many and many-to-one operations
+//// In a broadcast (Bcast) operation, data from one process are shared with all other processes in the communication group. In a reduction op- eration, all the data is concentrated to a single process.
+//// There are other predefined reduction operations available including some bit-wise operations, and there is also opportu- nity to define extra operations. Note that the argument root is the source of the broadcast but the destination of the reduction
+//
+//void Comm::Bcast(void* buffer, int count , const MPI::Datatype& datatype, int root) const
+//void Comm::educe(const void* sendbuf, void* recvbuf, int count, const MPI::Datatype datatype, const MPI::Op& op, int root) const
+
+// Reductuion operation is given below where the partial sums of a series are summed together in a
+// single reduction step. Also, below is a broadcasr example in which one process process 0 - mimics
+// throwing three dice by generating integer randim numbers from 1-6, and broadcasts the results of
+// all three thorws. Each process then adds their own rank to the value shown on the first
+// die, and a reductions opeations reports on the maximum value attained
+
+//int main(int argc, char* argv[])
+//{
+//    MPI::Init(argc, argv);
+//    int dice[3] = {0, 0, 0};
+//    //Proc 0 sets the dice (#sides)
+//    if (MPI::COMM_WORLD.Get_rank() == 0)
+//    {
+//        for (int i = 0; i < 3; i ++)
+//        {
+//            dice[i] = (rand() % 6) + 1;
+//        }
+//    }
+//    std::cout << "Dice " << dice[0] << " received from " "\n";
+//    //Proc 0 broadcasts
+//    MPI::COMM_WORLD.Bcast(dice, 3, MPI::INT, 0);
+//    //Every process adds their rank to dice[0]
+//    dice[0] += MPI::COMM_WORLD.Get_rank();
+//    std::cout << "Dice " << dice[0] << " received from " "\n";
+//    //Reduce the first value to get the maximum
+//    int max;
+//    MPI::COMM_WORLD.Reduce(dice, &max, 1, MPI::INT, MPI::MAX, 0);
+//    std::cout << "Process " << max << "\n";
+//    //On Proc 0: max = dice[0]+MPI::COMM_WORLD.Get_size()-1
+//    MPI::Finalize();
+//    return 0;
+//}
+
+// Scatter and Gather
+// ------------------
+
+
+//The scatter and gather operations are extensions to broadcast and reduction oper- ations. They are the most advanced operations which we cover in this book, and we do so because the gather operation is useful for taking data which has been distributed across processes and concentrating it onto a single process. For example, if a vector is split across processes in a similar manner to a PETSc vector we might wish to write it to a file using a single write operation using only one process.
+
+// The scatter operation is like broadcae it is one to many process. Sends message to all other processes
+// BC same entries of data of size count are sent to all processes, the first count elements are sent
+// to the first process and the next count to the next and so on.
+
+// The gather operation is similar to the reduce operation in that it is many to one. Each process
+// contributes some data to the result. The data is not reduced it is concatenated. Need count
+// multiplied bu num_procs elements will be stored. Can have variable data sizes with variations
+// of these functions.
+
+// Prototype signatures of the scatter and gather operations are
+
+//void Comm::Scatter(const void* sendbuf, int sendcount,
+//                   const MPI::Datatype& sendtype, void* recvbuf,
+//                   int recvcount, const MPI::Datatype& recvtype,
+//                   int root) const
+//
+//void Comm::Gather(const void* sendbuf, int sendcount,
+//                  const MPI::Datatype& sendtype, void* recvbuf,
+//                  int recvcount, const MPI::Datatype& recvtype,
+//                  int root) const
+//
+//void Comm::Allgatherv(const void* sendbuf, int sendcount,
+//                      const MPI::Datatype& sendtype, void* recvbuf,
+//                      const int recvcounts[], const int displs[],
+//                      const MPI::Datatype& recvtype) const
+
+// The argument root always refers to the scatterer (sender) or to the gatherer (receiver). In most
+// cases the types and counts of the send and receive data should be identical, with the counts
+// referring to the size of the array sent to each process.
+
+
+
+// Example MPI applications
+// ------------------------
+
+// In general, the choice of parallel algoirthm depends on how it relates to an equivalent sequenctial
+// algorithm and how the data is partitioned. Minimise communication between processes and the
+// the processes should be given an equivalent amount of work - load balancing.
+
+// The measures of success in producing parallel programs are parallel speedup and parallel efficiency
+// Parallel speedup is the ratio of the time it take to run the code sequentially vs the time it
+// takes to run on p processes. We hopw Sp = Ts/Tp = p. Parallel efficiency scales this value by p
+// so that Ep = Ts/pTp is in the range of 0 1 with 1 being ideal. It is rare but not unusual for a
+// problem to scale in parallel such that Ep > 1. Happens when there are memomory constraints n
+// small number of processes and is known as super-linear speedup.
+
+// Summation of Series
+// -------------------
+
+// The summation of a series can be taken as an abstraction of a range of problems. Partition work
+// and minimal communication. Termed embarrassingly parallel. Problem of summing a series, scuh as
+// the approximation to pi
+
+// pi/4 = sum(0, inf) (-1)^n/(2n + 1)
+
+// credited to Gottfried Wilhelm Leibniz. Compute up to some max not infinity. In dividing the max
+// contribtions to each process we might choose to allocate the work in blocks so that the
+// first max/p contributions to the series go to process zero, and so on, or we may distribute in
+// such a way to interleave processor contributions. The following code the contributions are inter
+// leaved (divide (memory or processing power) between a number of tasks by allocating segments of it to each task in turn). Only parallel communication neede in this code is a reduction operation
+// which combined the subtotals from the process into a grand total on process 0.
+
+
+// Program to sum Pi using Leibniz formula:
+// Pi = 4*Sum_n( (-1)**n/(2*n+1) )
+
+
+//int main(int argc, char* argv[])
+//{
+//    int max_n = 10000;
+//    double sum = 0;
+//    MPI::Init(argc, argv);
+//    
+//    int num_procs = MPI::COMM_WORLD.Get_size();
+//    int      rank = MPI::COMM_WORLD.Get_rank();
+//    
+//    std::cout << "num_procs " << num_procs << "\n";
+//    std::cout << "rank " << rank  << "\n";
+//    int ss = 0;
+//    for (int n = rank; n < max_n; n += num_procs)
+//    {
+//        double temp = 1.0 / (2.0 * ((double)(n)) + 1.0);
+//        if (n % 2 == 0) // n is even
+//        {
+//            sum += temp; }
+//        else
+//        {
+//            // n is odd
+//            sum -= temp;
+//        }
+//        ss += n;
+//    }
+//    std::cout << "Elements computed on process " << rank << "is " << ss << "\n";
+//    
+//    double global_sum;
+//    
+//    MPI::COMM_WORLD.Reduce(&sum, &global_sum, 1, MPI::DOUBLE, MPI::SUM, 0);
+//    
+//    if (rank == 0)
+//    {
+//        std::cout << "Pi is about " << 4.0 * global_sum
+//                  << " with error " << 4.0 * global_sum - M_PI
+//                  << "\n";
+//    }
+//    MPI::Finalize();
+//    return 0;
+//}
+
+
+// Parallel Linear Algebra
+// -----------------------
+
+
+
+
+
+
+
+
+
 
 

@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 #include <cerrno> // something to help with reading in buffers
-#include "/usr/include/armadillo"
+#include "armadillo"
 
 
 
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
     
     // Open the read file stream and read in the genotype matrix
     
-    ifstream read_file_size ("/Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Basic_BayesR/R_Code_Data/M500_N100_GA1.raw");
+    ifstream read_file_size ("~/Dropbox/Git_Repos/Fin_Mix_Reg/Data/cape_verde_r10k.txt");
     
     // Set some variables
     string line;
@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
     
     // Read in the genotype matrix and store
     
-    ifstream read_geno_file ("/Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Basic_BayesR/R_Code_Data/M500_N100_GA1.raw");
+    ifstream read_geno_file ("~/Dropbox/Git_Repos/Fin_Mix_Reg/Data/cape_verde_r10k.txt");
     assert(read_geno_file.is_open());
     
     for (int i = 0; i < nrow; i++)
@@ -139,7 +139,7 @@ int main(int argc, char* argv[])
     
     // Open the read file stream and read in the genotype matrix
     
-    ifstream read_pheno_size("/Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Basic_BayesR/R_Code_Data/M500_N100_GA1.phen");
+    ifstream read_pheno_size("~/Dropbox/Git_Repos/Fin_Mix_Reg/Data/cape_verde_pheno.txt");
     
     // Reset the number of zeros
     
@@ -190,7 +190,7 @@ int main(int argc, char* argv[])
 
     // Read in the phenotype matrix
     
-    ifstream read_pheno("/Users/uqllloyd/Dropbox/Git_Repos/CPP_Programming/Basic_BayesR/R_Code_Data/M500_N100_GA1.phen");
+    ifstream read_pheno("~/Dropbox/Git_Repos/Fin_Mix_Reg/Data/cape_verde_pheno.txt");
     assert(read_pheno.is_open());
     
     for (int i=0; i < nrow; i++)
