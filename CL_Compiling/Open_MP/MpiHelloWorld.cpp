@@ -8,7 +8,7 @@
 // ---------------------------------------------------------------------
 
 #include <mpi.h>
-#include <boost/lambda/lambda.hpp>
+// #include <boost/lambda/lambda.hpp>
 #include <iostream>
 #include <iterator>
 #include <algorithm>
@@ -521,9 +521,79 @@
 // Parallel Linear Algebra
 // -----------------------
 
+// We can partition the matrix into sets of rows and push these sets to different
+// processes. Each process mush know all the elements of the vector that is
+// being modelled. We need the following operations to do the Ax=b problem
+
+// Scalar vector multiplication - operation on locally held data
+// Vector-vector addition and subtraction - operations on locally held data
+// Vector Euclidean norm - a sum of squares on local data followed by a global
+// sum of squares (a parallel reduction), followed by a square root
+// Matrix-vector multiplication in whch data from the vector must be
+// communicated between all the processes
 
 
+// Lots in the MpiVector.hpp to learn
 
+#include <iostream>
+#include <mpi.h>
+#include "MpiVector.hpp"
+
+int main(int argc, char* argv[])
+{
+    MPI::Init(argc, argv);
+    MpiVector all_ones(200);
+    std::cout << "Local has [" << all_ones.GetLo() <<
+                 ", " << all_ones.GetHi() << ")\n";
+    for (int i = all_ones.GetLo(); i < all_ones.GetHi(); i++)
+    {
+        all_ones[i] = i * 1.0;
+    }
+    // assert(fabs(all_ones.CalculateNorm() - 3.0) < 1.0e-6);
+    // all_ones.UpdateGlobal();
+    // std::cout << all_ones.UpdateGlobal() << "\n";
+    MPI::Finalize();
+    return 0;
+}
+
+// Debugging a parallel program
+// ----------------------------
+
+// Make an abstract program. Hard to see the communication patterns underlying
+// the parallel code. They can easily get lost in the details of the calculations
+// Take the time to design the communication patterns needed in your parallel
+// codeand then start afresh. Write a simplified abstract program which concentrates
+// on communication but neglects the main calculation. Test the safe working of the
+// communication at first. Once the message passing is working correctly then it can
+// be easily integrated into the main program.
+
+// Data type mismatch
+// Listing 11.2 the process 0 block has been amended so that the type of the data is
+// now int and the message sent is MPI::INT. However, the receiving code is still
+// MPI:: DOUBLE. The message passing may work correctly in terms of communication
+// but the data received on process 1 will probably be incorrect. This may be in
+// mismatches in the size of the data or it may be due to errors in the conversion
+// of the data.
+
+// Problems of data types or sizes can be hard to see especially when send and receive
+// components are in separates methods or in separate files.
+
+// Intermittent Deadlock
+// Deadlock is the situation where all processes are waiting for some event to happen
+// before proceeding but no process can supply that event because they are waiting
+// for another process. Delib induce deadlock in ex 11.2 by never receiving any
+// messages so that eventually the sender is not able to proceed because it is
+// unable to send any more messages.
+// Problems involving intermittent deadlock are harder to diagnose. Happens
+// when you deadlock on some runs but is fine on others. For example, for some
+// test data the program runs fine but for real life input it deadlocks. This
+// indicates that timing and size are problems. Small amounts of data can be
+// buffered but large amounts cannot. May be a threshold that induces deadlock.
+// They may their programs more likely to deadlock by removing buffering and
+// asynchronous messages by replacing Send with Ssend. This will lead to
+// deadlock rather than Ideadlock and thus easier to identufy. You can make the
+// program more synchronous by splitting calc steps up with barriers. You can then
+// make the code more efficient latter.
 
 
 
